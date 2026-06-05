@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Agricola;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\CreateTaskRequest;
+use App\Http\Requests\Agricola\UpdateTaskRequest;
 use App\Http\Resources\Agricola\PaginatedTasksResource;
 use App\Http\Resources\Agricola\TaskResource;
 use App\Interfaces\Agricola\TaskServiceInterface;
@@ -47,24 +48,30 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, TaskServiceInterface $service)
     {
-        //
+        try {
+            $task = $service->getTaskById($id);
+
+            return ResponseHandler::success($task, 'Tarea Obtenida Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTaskRequest $request, string $id, TaskServiceInterface $service)
     {
-        //
-    }
+        try {
+            $data = $request->validated();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            $service->updateTaskById($data, $id);
+
+            return ResponseHandler::success(null, 'Tarea Actualizada Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
     }
 }
