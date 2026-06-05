@@ -2,6 +2,7 @@
 
 namespace App\Models\Agricola;
 
+use App\Models\Lote;
 use Illuminate\Database\Eloquent\Model;
 
 class Finca extends Model
@@ -10,5 +11,11 @@ class Finca extends Model
         'name',
         'code',
         'terminal_id'
-    ];  
+    ];
+
+
+    public function lotes()
+    {
+        $this->hasMany(Lote::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 return [
     App\Providers\Agricola\FincaServiceProvider::class,
+    App\Providers\Agricola\LoteProvider::class,
     App\Providers\Agricola\TaskServiceInterface::class,
     App\Providers\Agricola\TaskServiceProvider::class,
     App\Providers\AppServiceProvider::class,
