@@ -3,8 +3,12 @@
 namespace App\Services\Agricola;
 
 use App\Errors\NotFoundError;
+use App\Imports\Agricola\TasksImport;
 use App\Interfaces\Agricola\TaskServiceInterface;
 use App\Models\Agricola\Task;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Override;
 
 class TaskService implements TaskServiceInterface
 {
@@ -35,10 +39,24 @@ class TaskService implements TaskServiceInterface
         return $task;
     }
 
+    public function getTaskByCode(string $code)
+    {
+        $task = Task::where('code', '=', $code, null)->first();
+
+        return $task;
+    }
+
     public function updateTaskById(array $data, string $id)
     {
         $this->getTaskById($id);
         $task = Task::where('id', '=', $id, null)->update($data);
         return $task;
+    }
+
+    public function uploadTasksFromFile(mixed $file)
+    {
+        DB::transaction(function () use ($file) {
+            Excel::import(new TasksImport, $file);
+        });
     }
 }

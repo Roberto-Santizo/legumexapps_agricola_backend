@@ -4,5 +4,13 @@ use App\Http\Controllers\Agricola\FincaController;
 use App\Http\Controllers\Agricola\TaskController;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('/fincas', FincaController::class)->middleware('jwt.auth');
-Route::apiResource('/tasks', TaskController::class)->middleware('jwt.auth');
+//CRUDS
+Route::middleware('jwt.auth')->group(function () {
+    Route::apiResource('/fincas', FincaController::class);
+    Route::apiResource('/tasks', TaskController::class);
+});
+
+//FUNCTIONALITYS
+Route::middleware('jwt.auth')->group(function () {
+    Route::post('/tasks/uploadFile', [TaskController::class, 'uploadFile']);
+});

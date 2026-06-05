@@ -6,6 +6,7 @@ use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\CreateTaskRequest;
 use App\Http\Requests\Agricola\UpdateTaskRequest;
+use App\Http\Requests\Shared\UploadFileRequest;
 use App\Http\Resources\Agricola\PaginatedTasksResource;
 use App\Http\Resources\Agricola\TaskResource;
 use App\Interfaces\Agricola\TaskServiceInterface;
@@ -70,6 +71,19 @@ class TaskController extends Controller
             $service->updateTaskById($data, $id);
 
             return ResponseHandler::success(null, 'Tarea Actualizada Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function uploadFile(UploadFileRequest $request, TaskServiceInterface $service)
+    {
+        try {
+            $file = $request->validated();
+
+            $service->uploadTasksFromFile($file['file']);
+
+            return ResponseHandler::success(null, 'Tareas Creadas Correctamente', 201);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
