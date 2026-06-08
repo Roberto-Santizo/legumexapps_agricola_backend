@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Agricola;
+namespace App\Http\Requests\Agricola\Fincas;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

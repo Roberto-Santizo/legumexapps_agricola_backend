@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Agricola;
 
 use App\Models\Agricola\Finca;
 use Illuminate\Database\Eloquent\Model;

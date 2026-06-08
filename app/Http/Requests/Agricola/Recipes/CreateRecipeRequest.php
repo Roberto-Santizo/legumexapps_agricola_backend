@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Agricola;
+namespace App\Http\Requests\Agricola\Recipes;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCropRequest extends FormRequest
+class CreateRecipeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +23,14 @@ class UpdateCropRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required'],
-            'code' => ['required', 'unique:crops,id,except,' . $this->id]
+            'name' => ['required']
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'El nombre es requerido',
-            'code.required' => 'El código ingresado es requerido',
-            'code.unique' => 'El código ya existe'
+            'name.required' => 'El nombre de la receta es requerida'
         ];
     }
 }

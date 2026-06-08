@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Agricola;
 
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Agricola\CreateTaskRequest;
-use App\Http\Requests\Agricola\UpdateTaskRequest;
+use App\Http\Requests\Agricola\Tasks\CreateTaskRequest;
+use App\Http\Requests\Agricola\Tasks\UpdateTaskRequest;
 use App\Http\Requests\Shared\UploadFileRequest;
 use App\Http\Resources\Agricola\PaginatedTasksResource;
 use App\Http\Resources\Agricola\TaskResource;

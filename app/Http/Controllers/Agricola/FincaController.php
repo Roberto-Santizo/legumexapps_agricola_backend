@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Agricola;
 
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Agricola\CreateFincaRequest;
-use App\Http\Requests\Agricola\UpdateFincaRequest;
+use App\Http\Requests\Agricola\Fincas\CreateFincaRequest;
+use App\Http\Requests\Agricola\Fincas\UpdateFincaRequest;
 use App\Http\Resources\Agricola\FincaResource;
 use App\Http\Resources\Agricola\PaginatedFincasResource;
 use App\Interfaces\Agricola\FincaServiceInterface;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Agricola;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\Crops\CreateCropRequest;
-use App\Http\Requests\Agricola\UpdateCropRequest;
+use App\Http\Requests\Agricola\Crops\UpdateCropRequest;
 use App\Http\Resources\Agricola\CropResource;
 use App\Http\Resources\Agricola\PaginatedCropsResource;
 use App\Interfaces\Agricola\CropServiceInterface;

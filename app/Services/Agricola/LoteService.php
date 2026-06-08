@@ -4,7 +4,7 @@ namespace App\Services\Agricola;
 
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\LoteServiceInterface;
-use App\Models\Lote;
+use App\Models\Agricola\Lote;
 
 class LoteService implements LoteServiceInterface
 {

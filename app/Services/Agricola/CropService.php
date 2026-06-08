@@ -4,7 +4,7 @@ namespace App\Services\Agricola;
 
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\CropServiceInterface;
-use App\Models\Crop;
+use App\Models\Agricola\Crop;
 
 class CropService implements CropServiceInterface
 {
