@@ -1,6 +1,7 @@
 <?php
 
 return [
+    App\Providers\Agricola\CdpServiceProvider::class,
     App\Providers\Agricola\CropServiceProvider::class,
     App\Providers\Agricola\FincaServiceProvider::class,
     App\Providers\Agricola\LoteProvider::class,

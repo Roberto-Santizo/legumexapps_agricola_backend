@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Services\Agricola;
+
+use App\Errors\NotFoundError;
+use App\Interfaces\Agricola\CdpServiceInterface;
+use App\Models\Agricola\Cdp;
+
+class CdpService implements CdpServiceInterface
+{
+    public function createCdp(array $data)
+    {
+        $cdp = Cdp::create($data);
+        return $cdp;
+    }
+
+    public function getCdps(?string $limit)
+    {
+        $query = Cdp::query();
+
+        $query->with(['lote', 'crop', 'recipe']);
+
+        if ($limit) {
+            return $query->paginate($limit);
+        }
+
+        return $query->get();
+    }
+
+    public function getCdpById(string $id)
+    {
+        $cdp = Cdp::where('id', '=', $id, null)->first();
+
+        if (!$cdp) throw new NotFoundError("El CDP no existe");
+
+        return $cdp;
+    }
+
+    public function updateCdpById(array $data, string $id)
+    {
+        $this->getCdpById($id);
+        $cdp = Cdp::where('id', '=', $id, null)->update($data);
+        return $cdp;
+    }
+}

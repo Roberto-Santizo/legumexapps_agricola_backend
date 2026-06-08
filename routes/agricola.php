@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Agricola\CdpController;
 use App\Http\Controllers\Agricola\CropController;
 use App\Http\Controllers\Agricola\FincaController;
 use App\Http\Controllers\Agricola\LoteController;
@@ -15,6 +16,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::apiResource('/lotes', LoteController::class);
     Route::apiResource('/crops', CropController::class);
     Route::apiResource('/recipes', RecipeController::class);
+    Route::apiResource('/cdps', CdpController::class);
 });
 
 //FUNCTIONALITYS
