@@ -31,7 +31,6 @@ class WeeklyPlanService implements WeeklyPlanServiceInterface
     public function getWeeklyPlans(?string $limit)
     {
         $query = WeeklyPlan::query();
-
         if ($limit) return $query->paginate($limit);
 
         return $query->get();

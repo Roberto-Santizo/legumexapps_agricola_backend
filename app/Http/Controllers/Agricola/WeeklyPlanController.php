@@ -8,7 +8,7 @@ use App\Http\Requests\Agricola\WeeklyPlans\CreateWeeklyPlanRequest;
 use App\Http\Resources\Agricola\PaginatedWeeklyPlansResource;
 use App\Http\Resources\Agricola\WeeklyPlanResource;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
-
+use App\Models\Agricola\WeeklyPlan;
 use Illuminate\Http\Request;
 
 class WeeklyPlanController extends Controller
@@ -52,7 +52,17 @@ class WeeklyPlanController extends Controller
         try {
             $weekly_plan = $service->getWeeklyPlanById($id);
 
-            return ResponseHandler::success($weekly_plan, 'Plan Semanal Creado Correctamente', 201);
+            return ResponseHandler::success($weekly_plan, 'Plan Semanal Creado Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function uploadTasksToWeeklyPlan(string $id)
+    {
+        try {
+
+            return ResponseHandler::success(null, 'Tareas Cargadas Correctamente', 201);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

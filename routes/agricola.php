@@ -19,11 +19,12 @@ Route::middleware('jwt.auth')->group(function () {
     Route::apiResource('/crops', CropController::class);
     Route::apiResource('/recipes', RecipeController::class);
     Route::apiResource('/cdps', CdpController::class);
-    Route::apiResource('/weekly-plans', WeeklyPlanController::class);
     Route::apiResource('/finca-groups', FincaGroupController::class);
+    Route::apiResource('/weekly-plans', WeeklyPlanController::class);
 });
 
 //FUNCTIONALITYS
 Route::middleware('jwt.auth')->group(function () {
     Route::post('/tasks/uploadFile', [TaskController::class, 'uploadFile']);
+    Route::post('/weekly-plans/uploadTasks/{id}', [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']);
 });

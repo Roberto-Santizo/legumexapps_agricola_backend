@@ -14,7 +14,6 @@ class WeeklyPlanResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
         $budget = $this->getBudget();
         $extraordinaryBudget = $this->getExtraordinaryBudget();
         $tasksSummary = $this->getTasksSummary();
