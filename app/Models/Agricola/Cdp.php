@@ -2,26 +2,25 @@
 
 namespace App\Models\Agricola;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Override;
+
+#[Fillable(['name', 'start_date', 'end_date', 'lote_id', 'total_plants', 'recipe_id', 'crop_id'])]
 
 class Cdp extends Model
 {
     protected $table = 'plantation_controls';
 
-    protected $fillable = [
-        'name',
-        'start_date',
-        'end_date',
-        'lote_id',
-        'total_plants',
-        'recipe_id',
-        'crop_id'
-    ];
 
-    protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime'
-    ];
+    #[Override]
+    protected function casts()
+    {
+        return [
+            'start_date' => 'datetime',
+            'end_date' => 'datetime'
+        ];
+    }
 
     public function lote()
     {

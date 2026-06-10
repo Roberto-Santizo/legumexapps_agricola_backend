@@ -2,19 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+#[Fillable(['name', 'email', 'password', 'role', 'username'])]
+#[Hidden(['password'])]
+
 class User extends Authenticatable implements JWTSubject
 {
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-        'username'
-    ];
-
     public function getJWTIdentifier()
     {
         return $this->getKey();
