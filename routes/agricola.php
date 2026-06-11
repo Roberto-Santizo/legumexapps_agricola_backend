@@ -9,20 +9,23 @@ use App\Http\Controllers\Agricola\RecipeController;
 use App\Http\Controllers\Agricola\SupplyController;
 use App\Http\Controllers\Agricola\TaskController;
 use App\Http\Controllers\Agricola\WeeklyPlanController;
-
+use App\Http\Controllers\Agricola\WeeklyPlanTaskController;
+use App\Http\Controllers\WeeklyPlanTaskInsumoController;
 use Illuminate\Support\Facades\Route;
 
 //CRUDS
 Route::middleware('jwt.auth')->group(function () {
-    Route::apiResource('/fincas',       FincaController::class);
-    Route::apiResource('/tasks',        TaskController::class);
-    Route::apiResource('/lotes',        LoteController::class);
-    Route::apiResource('/crops',        CropController::class);
-    Route::apiResource('/recipes',      RecipeController::class);
-    Route::apiResource('/cdps',         CdpController::class);
-    Route::apiResource('/finca-groups', FincaGroupController::class);
-    Route::apiResource('/weekly-plans', WeeklyPlanController::class);
-    Route::apiResource('/supplies',     SupplyController::class);
+    Route::apiResource('/fincas',                       FincaController::class);
+    Route::apiResource('/tasks',                        TaskController::class);
+    Route::apiResource('/lotes',                        LoteController::class);
+    Route::apiResource('/crops',                        CropController::class);
+    Route::apiResource('/recipes',                      RecipeController::class);
+    Route::apiResource('/cdps',                         CdpController::class);
+    Route::apiResource('/supplies',                     SupplyController::class);
+    Route::apiResource('/finca-groups',                 FincaGroupController::class);
+    Route::apiResource('/weekly-plans',                 WeeklyPlanController::class);
+    Route::apiResource('/weekly-plan-tasks',            WeeklyPlanTaskController::class);
+    Route::apiResource('/weekly-plan-task-supplies',    WeeklyPlanTaskInsumoController::class);
 });
 
 //FUNCTIONALITYS

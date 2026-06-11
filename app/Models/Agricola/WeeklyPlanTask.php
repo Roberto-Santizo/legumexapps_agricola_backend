@@ -11,8 +11,34 @@ class WeeklyPlanTask extends Model
 {
     protected $table = 'task_weekly_plans';
 
+    protected $casts = [
+        'operation_date' => 'datetime',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime'
+    ];
+
     public function weeklyPlan()
     {
         return $this->belongsTo(WeeklyPlan::class, 'weekly_plan_id', 'id');
+    }
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class, 'tarea_id', 'id');
+    }
+
+    public function cdp()
+    {
+        return $this->belongsTo(Cdp::class, 'plantation_control_id', 'id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(FincaGroup::class, 'finca_group_id', 'id');
+    }
+
+    public function supplies()
+    {
+        return $this->hasMany(WeeklyPlanTaskInsumo::class, 'task_weekly_plan_id', 'id');
     }
 }

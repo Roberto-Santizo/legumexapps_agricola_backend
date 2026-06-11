@@ -18,11 +18,11 @@ return new class extends Migration
             $table->integer('workers_quantity');
             $table->integer('slots');
             $table->timestamp('operation_date');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
-            $table->boolean('extraordinary');
-            $table->boolean('use_dron');
-            $table->boolean('prepared_insumos');
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
+            $table->boolean('extraordinary')->default(0);
+            $table->boolean('use_dron')->default(0);
+            $table->boolean('prepared_insumos')->default(0);
             $table->foreignId('weekly_plan_id')->constrained()->on('weekly_plans');
             $table->foreignId('tarea_id')->constrained()->on('tareas');
             $table->foreignId('plantation_control_id')->constrained()->on('plantation_controls');
