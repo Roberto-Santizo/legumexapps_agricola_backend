@@ -11,6 +11,7 @@ return [
     App\Providers\Agricola\SupplyServiceProvider::class,
     App\Providers\Agricola\TaskServiceInterface::class,
     App\Providers\Agricola\TaskServiceProvider::class,
+    App\Providers\Agricola\WeeklyPlanEmployeeServiceProvider::class,
     App\Providers\Agricola\WeeklyPlanServiceProvider::class,
     App\Providers\Agricola\WeeklyPlanTaskInsumoServiceProvider::class,
     App\Providers\Agricola\WeeklyPlanTaskServiceProvider::class,
