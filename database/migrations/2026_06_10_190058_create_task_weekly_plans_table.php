@@ -17,7 +17,7 @@ return new class extends Migration
             $table->float('hours');
             $table->integer('workers_quantity');
             $table->integer('slots');
-            $table->timestamp('operation_date');
+            $table->timestamp('operation_date')->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->boolean('extraordinary')->default(0);
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreignId('weekly_plan_id')->constrained()->on('weekly_plans');
             $table->foreignId('tarea_id')->constrained()->on('tareas');
             $table->foreignId('plantation_control_id')->constrained()->on('plantation_controls');
-            $table->foreignId('finca_group_id')->constrained()->on('finca_groups');
+            $table->foreignId('finca_group_id')->nullable(true)->constrained()->on('finca_groups');
             $table->timestamps();
         });
     }

@@ -4,12 +4,25 @@ namespace App\Services\Agricola;
 
 use App\Errors\BadRequestError;
 use App\Errors\NotFoundError;
+use App\Imports\Agricola\WeeklyPlanTasksImport;
+use App\Interfaces\Agricola\CdpServiceInterface;
+use App\Interfaces\Agricola\SupplyServiceInterface;
+use App\Interfaces\Agricola\TaskServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
 use App\Models\Agricola\WeeklyPlan;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Override;
 
 class WeeklyPlanService implements WeeklyPlanServiceInterface
 {
+
+    public function __construct(
+        private readonly CdpServiceInterface $cdpService,
+        private readonly TaskServiceInterface $taskService,
+        private readonly SupplyServiceInterface $supplyService,
+    ) {}
+
     #[Override]
     public function getWeeklyPlanByParams(array $params)
     {
@@ -42,6 +55,15 @@ class WeeklyPlanService implements WeeklyPlanServiceInterface
         $weekl_plan = WeeklyPlan::find($id, ['id', 'week', 'year', 'finca_id']);
         if (!$weekl_plan) throw new NotFoundError("El plan semanal no existe");
         return $weekl_plan;
+    }
+
+    #[Override]
+    public function uploadTasksToWeeklyPlan(mixed $file, string $id)
+    {
+        $weekly_plan = $this->getWeeklyPlanById($id);
+        DB::transaction(function () use ($weekly_plan, $file) {
+            Excel::import(new WeeklyPlanTasksImport($this->cdpService, $this->taskService, $this->supplyService, $weekly_plan), $file);
+        });
     }
 
     #[Override]

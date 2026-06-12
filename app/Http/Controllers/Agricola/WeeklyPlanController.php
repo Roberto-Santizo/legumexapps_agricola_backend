@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Agricola;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\WeeklyPlans\CreateWeeklyPlanRequest;
+use App\Http\Requests\Shared\UploadFileRequest;
 use App\Http\Resources\Agricola\PaginatedWeeklyPlansResource;
 use App\Http\Resources\Agricola\WeeklyPlanResource;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
@@ -58,9 +59,11 @@ class WeeklyPlanController extends Controller
         }
     }
 
-    public function uploadTasksToWeeklyPlan(string $id)
+    public function uploadTasksToWeeklyPlan(UploadFileRequest $request, string $id, WeeklyPlanServiceInterface $service)
     {
         try {
+            $file = $request->validated();
+            $service->uploadTasksToWeeklyPlan($file['file'], $id);
 
             return ResponseHandler::success(null, 'Tareas Cargadas Correctamente', 201);
         } catch (\Throwable $th) {

@@ -9,4 +9,5 @@ interface WeeklyPlanServiceInterface
     public function getWeeklyPlanById(string $id);
     public function getWeeklyPlanByParams(array $params);
     public function updateWeeklyPlan(array $data, string $id);
+    public function uploadTasksToWeeklyPlan(mixed $file, string $id);
 }
