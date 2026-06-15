@@ -17,32 +17,34 @@ use Illuminate\Support\Facades\Route;
 
 //CRUDS
 Route::middleware('jwt.auth')->group(function () {
-    Route::apiResource('/fincas',                               FincaController::class);
-    Route::apiResource('/tasks',                                TaskController::class);
-    Route::apiResource('/lotes',                                LoteController::class);
-    Route::apiResource('/crops',                                CropController::class);
-    Route::apiResource('/recipes',                              RecipeController::class);
-    Route::apiResource('/cdps',                                 CdpController::class);
-    Route::apiResource('/supplies',                             SupplyController::class);
-    Route::apiResource('/finca-groups',                         FincaGroupController::class);
-    Route::apiResource('/weekly-plans',                         WeeklyPlanController::class);
-    Route::apiResource('/weekly-plan-tasks',                    WeeklyPlanTaskController::class);
-    Route::apiResource('/weekly-plan-task-supplies',            WeeklyPlanTaskInsumoController::class);
-    Route::apiResource('/weekly-plan-employees',                WeeklyPlanEmployeeController::class);
-    Route::apiResource('/weekly-plan-task-employees',           WeeklyPlanTaskEmployeeController::class);
+    Route::apiResource('/fincas',                               FincaController::class                      );
+    Route::apiResource('/tasks',                                TaskController::class                       );
+    Route::apiResource('/lotes',                                LoteController::class                       );
+    Route::apiResource('/crops',                                CropController::class                       );
+    Route::apiResource('/recipes',                              RecipeController::class                     );
+    Route::apiResource('/cdps',                                 CdpController::class                        );
+    Route::apiResource('/supplies',                             SupplyController::class                     );
+    Route::apiResource('/finca-groups',                         FincaGroupController::class                 );
+    Route::apiResource('/weekly-plans',                         WeeklyPlanController::class                 );
+    Route::apiResource('/weekly-plan-tasks',                    WeeklyPlanTaskController::class             );
+    Route::apiResource('/weekly-plan-task-supplies',            WeeklyPlanTaskInsumoController::class       );
+    Route::apiResource('/weekly-plan-employees',                WeeklyPlanEmployeeController::class         );
+    Route::apiResource('/weekly-plan-task-employees',           WeeklyPlanTaskEmployeeController::class     );
 });
 
 //FUNCTIONALITYS
 Route::middleware('jwt.auth')->group(function () {
     //TASKS
-    Route::post('/tasks/uploadFile',                                            [TaskController::class, 'uploadFile']);
-
+    Route::post('/tasks/uploadFile',                                            [TaskController::class, 'uploadFile']                               );
+    
     //WEEKLY PLANS
-    Route::post('/weekly-plans/uploadTasks/{id}',                               [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']);
-
+    Route::post('/weekly-plans/uploadTasks/{id}',                               [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']            );
+    
     //WEEKLY PLANS EMPLOYEE
-    Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',         [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']);
+    Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',         [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']   );
 
     //WEEKLY PLAN TASKS
-    Route::post('/weekly-plan-tasks/startTask/{id}',                            [WeeklyPlanTaskController::class, 'startWeeklyPlanTask']);
+    Route::get('/weekly-plan-tasks/getTasksForCalendar/{id}',                   [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksForCalendar']  );
+    Route::post('/weekly-plan-tasks/startTask/{id}',                            [WeeklyPlanTaskController::class, 'startWeeklyPlanTask']            );
+    Route::post('/weekly-plan-tasks/closeTask/{id}',                            [WeeklyPlanTaskController::class, 'closeWeeklyPlanTask']            );
 });

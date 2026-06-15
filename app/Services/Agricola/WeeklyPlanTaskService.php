@@ -33,9 +33,11 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     }
 
     #[Override]
-    public function getWeeklyPlanTasks(?string $limit)
+    public function getWeeklyPlanTasks(?string $limit, ?string $id)
     {
-        throw new \Exception('Not implemented');
+        if (!$id) throw new BadRequestError("El ID del plan es requerido");
+        $tasks = WeeklyPlanTask::where('weekly_plan_id', '=', $id, null)->get();
+        return $tasks;
     }
 
     #[Override]
@@ -72,5 +74,22 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         $task->start_date = Carbon::now();
         $task->save();
         return $task;
+    }
+
+    #[Override]
+    public function closeWeeklyPlanTask(string $id)
+    {
+        throw new \Exception('Not implemented');
+    }
+
+    #[Override]
+    public function getWeeklyPlanTasksForCalendar(string $id)
+    {
+        $tasks = $this->getWeeklyPlanTasks(null, $id);
+        $filterdTasks = $tasks->filter(function ($task) {
+            return $task->operation_date != null;
+        });
+
+        return $filterdTasks;
     }
 }
