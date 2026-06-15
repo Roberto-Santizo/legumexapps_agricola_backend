@@ -72,4 +72,15 @@ class WeeklyPlanTaskController extends Controller
     {
         //!IMPLEMENT
     }
+
+    public function startWeeklyPlanTask(string $id, WeeklyPlanTaskServiceInterface $service)
+    {
+        try {
+            $service->startWeeklyPlanTask($id);
+            
+            return ResponseHandler::success(true, 'Tarea Iniciada Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
 }

@@ -18,4 +18,9 @@ class FincaGroup extends Model
     {
         return $this->belongsTo(Lote::class);
     }
+
+    public function employees()
+    {
+        return $this->hasMany(WeeklyPlanEmployee::class, 'finca_group_id', 'id');
+    }
 }
