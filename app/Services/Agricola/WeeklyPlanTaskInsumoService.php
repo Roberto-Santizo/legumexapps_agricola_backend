@@ -2,6 +2,7 @@
 
 namespace App\Services\Agricola;
 
+use App\Errors\BadRequestError;
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\WeeklyPlanTaskInsumoServiceInterface;
 use App\Models\Agricola\WeeklyPlanTask;
@@ -32,6 +33,14 @@ class WeeklyPlanTaskInsumoService implements WeeklyPlanTaskInsumoServiceInterfac
     {
         $insumos = $this->_formatData($data, $task);
         WeeklyPlanTaskInsumo::insert($insumos);
+    }
+
+    #[Override]
+    public function getWeeklyPlanTaskInsumos(?string $id)
+    {
+        if (!$id) throw new BadRequestError("El ID de la tarea es requerido");
+        $taskSupplies = WeeklyPlanTaskInsumo::where('task_weekly_plan_id', '=', $id, null)->get();
+        return $taskSupplies;
     }
 
     #[Override]

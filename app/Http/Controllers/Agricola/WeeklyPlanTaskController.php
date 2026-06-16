@@ -96,7 +96,7 @@ class WeeklyPlanTaskController extends Controller
     public function closeWeeklyPlanTask(string $id, WeeklyPlanTaskServiceInterface $service)
     {
         try {
-            // $service->startWeeklyPlanTask($id);
+            $service->closeWeeklyPlanTask($id);
 
             return ResponseHandler::success(true, 'Tarea Cerrada Correctamente', 200);
         } catch (\Throwable $th) {

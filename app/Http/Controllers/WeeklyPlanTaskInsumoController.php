@@ -4,11 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHandler;
 use App\Http\Requests\Agricola\WeeklyPlanTaskInsumo\UpdateTaskInsumoRequest;
+use App\Http\Resources\Agricola\WeeklyPlanTaskInsumoResource;
 use App\Interfaces\Agricola\WeeklyPlanTaskInsumoServiceInterface;
 use Illuminate\Http\Request;
 
 class WeeklyPlanTaskInsumoController extends Controller
 {
+
+    public function index(Request $request, WeeklyPlanTaskInsumoServiceInterface $service)
+    {
+        try {
+            $id = $request->query('taskId');
+            $insumos = $service->getWeeklyPlanTaskInsumos($id);
+
+            return ResponseHandler::success(WeeklyPlanTaskInsumoResource::collection($insumos), 'Insumos Obtenidos Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
     /**
      * Display the specified resource.
      */

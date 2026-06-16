@@ -3,6 +3,7 @@
 namespace App\Services\Agricola;
 
 use App\Errors\BadRequestError;
+use App\Errors\NotAcceptable;
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\WeeklyPlanTaskInsumoServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskServiceInterface;
@@ -24,10 +25,8 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         $data['workers_quantity'] = $slots;
         $data['slots'] = $slots;
 
-        //CREATE TASK
         $task = WeeklyPlanTask::create($data);
 
-        //ADD INSUMOS TO TASK
         $this->insumoService->addInsumosToTask($data['insumos'], $task);
         return $task;
     }
@@ -79,7 +78,16 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     #[Override]
     public function closeWeeklyPlanTask(string $id)
     {
-        throw new \Exception('Not implemented');
+        $task = $this->getWeeklyPlanTaskById($id);
+        $taskSupplies = $task->supplies()->where('task_weekly_plan_id', '=', $id)->where('used_quantity', '=', null)->get();
+        if ($taskSupplies->count() > 0) throw new NotAcceptable("La tarea cuenta con insumos sin cerrar");
+        if ($task->end_date) throw new BadRequestError("La tarea ya fue cerrada");
+
+
+        $task->end_date = Carbon::now();
+        $task->save();
+
+        return true;
     }
 
     #[Override]
