@@ -35,7 +35,7 @@ class WeeklyPlanTaskResource extends JsonResource
             'plantation_control_id' => $this->plantation_control_id,
             'cdp' => $this->cdp->name,
             'finca_group_id' => $this->finca_group_id,
-            'group' => $this->group ? $this->group->code : null,
+            'group' => $this->group ? $this->group->code : 'Sin grupo asociado',
             // 'supplies' => WeeklyPlanTaskInsumoResource::collection($this->supplies)
         ];
     }

@@ -25,12 +25,12 @@ class UpdateWeeklyPlanTaskRequest extends FormRequest
         return [
             'budget' =>                         ['required', 'numeric', 'min:1'],
             'hours' =>                          ['required', 'numeric'],
-            'operation_date' =>                 ['required', 'date'],
+            'operation_date' =>                 ['sometimes', 'nullable', 'date'],
             'extraordinary' =>                  ['required', 'boolean'],
             'weekly_plan_id' =>                 ['required', 'numeric', 'exists:weekly_plans,id'],
             'tarea_id' =>                       ['required', 'numeric', 'exists:tareas,id'],
             'plantation_control_id' =>          ['required', 'numeric', 'exists:plantation_controls,id'],
-            'finca_group_id' =>                 ['required', 'numeric', 'exists:finca_groups,id'],
+            'finca_group_id' =>                 ['sometimes',  'nullable', 'numeric', 'exists:finca_groups,id'],
         ];
     }
 

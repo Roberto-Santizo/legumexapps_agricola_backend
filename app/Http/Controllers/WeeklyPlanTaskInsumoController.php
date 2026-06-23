@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHandler;
+use App\Http\Requests\Agricola\WeeklyPlanTaskInsumo\AddInsumoToTaskRequest;
 use App\Http\Requests\Agricola\WeeklyPlanTaskInsumo\UpdateTaskInsumoRequest;
 use App\Http\Resources\Agricola\WeeklyPlanTaskInsumoResource;
 use App\Interfaces\Agricola\WeeklyPlanTaskInsumoServiceInterface;
@@ -22,6 +23,18 @@ class WeeklyPlanTaskInsumoController extends Controller
             return ResponseHandler::error($th);
         }
     }
+
+    public function store(AddInsumoToTaskRequest $request, WeeklyPlanTaskInsumoServiceInterface $service)
+    {
+        try {
+            $data = $request->validated();
+            $insumo = $service->addInsumoToTask($data);
+            return ResponseHandler::success($insumo, 'Insumo Creado Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
     /**
      * Display the specified resource.
      */
@@ -29,7 +42,7 @@ class WeeklyPlanTaskInsumoController extends Controller
     {
         try {
             $insumo = $service->getInsumoById($id);
-            return ResponseHandler::success($insumo, 'Insumo Obtenido Correctamente', 200);
+            return ResponseHandler::success(new WeeklyPlanTaskInsumoResource($insumo), 'Insumo Obtenido Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

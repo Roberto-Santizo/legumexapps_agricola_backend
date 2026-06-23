@@ -36,6 +36,12 @@ class WeeklyPlanTaskInsumoService implements WeeklyPlanTaskInsumoServiceInterfac
     }
 
     #[Override]
+    public function addInsumoToTask(array $data)
+    {
+        $insumo = WeeklyPlanTaskInsumo::create($data);
+        return $insumo;
+    }
+    #[Override]
     public function getWeeklyPlanTaskInsumos(?string $id)
     {
         if (!$id) throw new BadRequestError("El ID de la tarea es requerido");

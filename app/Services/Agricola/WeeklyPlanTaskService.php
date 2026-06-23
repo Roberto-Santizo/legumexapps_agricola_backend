@@ -4,6 +4,7 @@ namespace App\Services\Agricola;
 
 use App\Errors\BadRequestError;
 use App\Errors\NotAcceptable;
+use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskInsumoServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskServiceInterface;
@@ -51,7 +52,9 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     #[Override]
     public function getWeeklyPlanTaskById(string $id)
     {
-        throw new \Exception('Not implemented');
+        $task = WeeklyPlanTask::find($id, ['*']);
+        if (!$task) throw new NotFoundError("La tarea no existe");
+        return $task;
     }
 
     #[Override]
@@ -106,5 +109,16 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         });
 
         return $filterdTasks;
+    }
+
+    #[Override]
+    public function getWeeklyPlanTasksByCdp(string $weeklyPlanId, string $cdp)
+    {
+        $tasks = WeeklyPlanTask::where('weekly_plan_id', $weeklyPlanId)
+            ->whereHas('cdp', fn($q) => $q->where('name', $cdp))
+            ->with('cdp')
+            ->get();
+
+        return $tasks;
     }
 }

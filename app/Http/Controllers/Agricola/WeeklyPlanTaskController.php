@@ -26,7 +26,7 @@ class WeeklyPlanTaskController extends Controller
             $limit = $request->query('limit');
 
             $tasks = $service->getWeeklyPlanTasks($limit, $id);
-            
+
             return ResponseHandler::success(WeeklyPlanTaskResource::collection($tasks), 'Tareas Obtenidas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
@@ -120,12 +120,23 @@ class WeeklyPlanTaskController extends Controller
         }
     }
 
-    public function getWeeklyPlanTasksByLote(string $weeklyPlanId, WeeklyPlanServiceInterface $weeklyPlanService)
+    public function getWeeklyPlanTasksGroupByCdp(string $weeklyPlanId, WeeklyPlanServiceInterface $weeklyPlanService)
     {
         try {
             $weeklyPlan = $weeklyPlanService->getWeeklyPlanById($weeklyPlanId);
 
             return ResponseHandler::success(new WeeklyPlanTasksByLoteResource($weeklyPlan), 'Tareas Obtenidas Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function getWeeklyPlanTasksByCdp(string $weeklyPlanId, string $cdp, WeeklyPlanTaskServiceInterface $service)
+    {
+        try {
+            $tasks = $service->getWeeklyPlanTasksByCdp($weeklyPlanId, $cdp);
+
+            return ResponseHandler::success(WeeklyPlanTaskResource::collection($tasks), 'Tareas Obtenidas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

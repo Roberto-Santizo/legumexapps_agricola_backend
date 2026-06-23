@@ -5,7 +5,7 @@ namespace App\Http\Requests\Agricola\WeeklyPlanTaskInsumo;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskInsumoRequest extends FormRequest
+class AddInsumoToTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,19 +23,23 @@ class UpdateTaskInsumoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'assigned_quantity' => ['required', 'numeric'],
-            'used_quantity' => ['sometimes', 'nullable' , 'numeric'],
-            'insumo_id' => ['required', 'numeric', 'exists:insumos,id']
+            'task_weekly_plan_id' =>    ['required', 'numeric', 'exists:task_weekly_plans,id'],
+            'assigned_quantity' =>      ['required', 'numeric'],
+            'used_quantity' =>          ['sometimes', 'nullable' ,'numeric'],
+            'insumo_id' =>              ['required', 'numeric', 'exists:insumos,id'],
         ];
     }
 
     public function messages(): array
     {
         return [
+            'task_weekly_plan_id.required' => 'La tarea es obligatoria',
+            'task_weekly_plan_id.numeric' => 'El identificador de la tarea debe ser un valor numérico.',
+            'task_weekly_plan_id.exists' => 'La tarea no existe.',
+
             'assigned_quantity.required' => 'La cantidad asignada es obligatoria.',
             'assigned_quantity.numeric' => 'La cantidad asignada debe ser un valor numérico.',
 
-            'used_quantity.required' => 'La cantidad utilizada es obligatoria.',
             'used_quantity.numeric' => 'La cantidad utilizada debe ser un valor numérico.',
 
             'insumo_id.required' => 'El insumo es obligatorio.',
