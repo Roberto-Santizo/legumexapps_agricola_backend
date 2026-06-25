@@ -9,6 +9,7 @@ use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskInsumoServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskServiceInterface;
 use App\Models\Agricola\WeeklyPlanTask;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Override;
 
@@ -34,17 +35,23 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     }
 
     #[Override]
-    public function getWeeklyPlanTasks(?string $limit, ?string $id, ?string $taskName)
+    public function getWeeklyPlanTasks(?string $limit, ?string $id, Request $request)
     {
+        $task = $request->query('task');
+        $group = $request->query('group');
+        $cdp = $request->query('cdp');
+        $use_dron = $request->query('use_dron');
+
         if (!$id) throw new BadRequestError("El ID del plan es requerido");
         $query = WeeklyPlanTask::query();
         $query->where('weekly_plan_id', $id);
 
-        if ($taskName) {
-            $query->whereHas('task', function ($q) use ($taskName) {
-                $q->where('name', 'LIKE', '%' . $taskName . '%');
-            });
-        }
+        if ($task) $query->where('tarea_id', $task);
+        if ($group) $query->where('finca_group_id', $group);
+        if ($cdp) $query->where('plantation_control_id', $cdp);
+        if ($use_dron) $query->where('use_dron', $use_dron);
+
+
 
         return $query->get();
     }
@@ -84,9 +91,12 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     {
         $task = $this->getWeeklyPlanTaskById($id);
         if (!$task->group && !$task->use_dron) throw new BadRequestError("La tarea no cuenta con un grupo asignado");
-        $employees = $task->group->employees()->where('weekly_plan_id', $task->weekly_plan_id)->get();
 
-        $this->employeeService->insertEmployeesToWeeklyPlanTask($employees, $task->id);
+        if(!$task->use_dron){
+            $employees = $task->group->employees()->where('weekly_plan_id', $task->weekly_plan_id)->get();
+            $this->employeeService->insertEmployeesToWeeklyPlanTask($employees, $task->id);
+        }
+
 
         $task->start_date = Carbon::now();
         $task->save();
@@ -122,7 +132,12 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     #[Override]
     public function getWeeklyPlanTasksForCalendar(string $id)
     {
-        $tasks = $this->getWeeklyPlanTasks(null, $id);
+        if (!$id) throw new BadRequestError("El ID del plan es requerido");
+        $query = WeeklyPlanTask::query();
+        $query->where('weekly_plan_id', $id);
+
+        $tasks = $query->get();
+
         $filterdTasks = $tasks->filter(function ($task) {
             return $task->operation_date != null;
         });
@@ -134,7 +149,7 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     public function getWeeklyPlanTasksByCdp(string $weeklyPlanId, string $cdp)
     {
         $tasks = WeeklyPlanTask::where('weekly_plan_id', $weeklyPlanId)
-            ->whereNot('finca_group_id', null)
+            ->where('operation_date', Carbon::today())
             ->whereHas('cdp', fn($q) => $q->where('name', $cdp))
             ->with('cdp')
             ->get();

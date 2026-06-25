@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Interfaces\Agricola;
+use Illuminate\Http\Request;
 
 interface WeeklyPlanTaskServiceInterface
 {
     public function createWeeklyPlanTask(array $data);
-    public function getWeeklyPlanTasks(?string $limit, ?string $id, ?string $taskName);
+    public function getWeeklyPlanTasks(?string $limit, ?string $id, Request $request);
     public function getWeeklyPlanTasksByLote(?string $id);
     public function getWeeklyPlanTaskById(string $id);
     public function updateWeeklyPlanTaskById(array $data, string $id);

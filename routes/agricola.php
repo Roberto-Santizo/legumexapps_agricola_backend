@@ -52,5 +52,5 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/weekly-plan-tasks/getTasksByCdp/{weeklyPlanId}/{cdp}',             [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksByCdp']);
     Route::post('/weekly-plan-tasks/startTask/{id}',                                [WeeklyPlanTaskController::class, 'startWeeklyPlanTask']);
     Route::post('/weekly-plan-tasks/closeTask/{id}',                                [WeeklyPlanTaskController::class, 'closeWeeklyPlanTask']);
-    Route::post('/weekly-plan-tasks/cleanTask/{id}',                                    [WeeklyPlanTaskController::class, 'cleanWeeklyPlanTask']);
+    Route::post('/weekly-plan-tasks/cleanTask/{id}',                                [WeeklyPlanTaskController::class, 'cleanWeeklyPlanTask']);
 });

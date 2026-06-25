@@ -22,10 +22,9 @@ class WeeklyPlanTaskController extends Controller
     {
         try {
             $id = $request->query('weeklyPlanId');
-            $taskName = $request->query('taskName');
             $limit = $request->query('limit');
 
-            $tasks = $service->getWeeklyPlanTasks($limit, $id, $taskName);
+            $tasks = $service->getWeeklyPlanTasks($limit, $id, $request);
 
             return ResponseHandler::success(WeeklyPlanTaskResource::collection($tasks), 'Tareas Obtenidas Correctamente', 200);
         } catch (\Throwable $th) {

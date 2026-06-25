@@ -23,7 +23,7 @@ class CreateWeeklyPlanTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'budget' =>                         ['required', 'numeric', 'min:1'],
+            'budget' =>                         ['required', 'numeric', 'min:0'],
             'hours' =>                          ['required', 'numeric'],
             'operation_date' =>                 ['sometimes', 'date'],
             'extraordinary' =>                  ['required', 'boolean'],
@@ -31,6 +31,7 @@ class CreateWeeklyPlanTaskRequest extends FormRequest
             'tarea_id' =>                       ['required', 'numeric', 'exists:tareas,id'],
             'plantation_control_id' =>          ['required', 'numeric', 'exists:plantation_controls,id'],
             'finca_group_id' =>                 ['sometimes', 'numeric', 'exists:finca_groups,id'],
+            'use_dron' =>                       ['required','boolean'],
             'insumos' =>                        ['array'],
             'insumos.*.insumo_id' =>            ['required', 'numeric', 'exists:insumos,id'],
             'insumos.*.assigned_quantity' =>    ['required', 'numeric']
@@ -60,7 +61,10 @@ class CreateWeeklyPlanTaskRequest extends FormRequest
             'tarea_id.required' => 'La tarea es obligatoria.',
             'tarea_id.numeric' => 'El identificador de la tarea debe ser numérico.',
             'tarea_id.exists' => 'La tarea seleccionada no existe.',
-
+            
+            'use_dron.required' => 'Debe de especificar el tipo de tarea.',
+            'use_dron.boolean' => 'La información de dron debe de ser un dato booleano.',
+            
             'plantation_control_id.required' => 'El control de plantación es obligatorio.',
             'plantation_control_id.numeric' => 'El identificador del control de plantación debe ser numérico.',
             'plantation_control_id.exists' => 'El control de plantación seleccionado no existe.',

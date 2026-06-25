@@ -41,6 +41,7 @@ class WeeklyPlanTaskResource extends JsonResource
             'finca_group_id' =>             $this->finca_group_id,
             'group' =>                      $this->group ? $this->group->code : 'Sin grupo asociado',
             'status' =>                     $status,
+            'use_dron'=>                    $this->use_dron
         ];
     }
 }
