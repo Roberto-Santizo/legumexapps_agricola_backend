@@ -15,6 +15,7 @@ return [
     App\Providers\Agricola\WeeklyPlanServiceProvider::class,
     App\Providers\Agricola\WeeklyPlanTaskEmployeeServiceProvider::class,
     App\Providers\Agricola\WeeklyPlanTaskInsumoServiceProvider::class,
+    App\Providers\Agricola\WeeklyPlanTaskPartialClosureProvider::class,
     App\Providers\Agricola\WeeklyPlanTaskServiceProvider::class,
     App\Providers\AppServiceProvider::class,
     App\Providers\Auth\AuthProvider::class,

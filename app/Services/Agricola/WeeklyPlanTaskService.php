@@ -123,6 +123,7 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     {
         $task = $this->getWeeklyPlanTaskById($id);
         $task->employees()->delete();
+        $task->partialClosures()->delete();
         $task->start_date = null;
         $task->end_date = null;
         $task->save();

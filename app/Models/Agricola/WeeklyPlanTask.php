@@ -46,4 +46,9 @@ class WeeklyPlanTask extends Model
     {
         return $this->hasMany(WeeklyPlanTaskEmployee::class, 'task_weekly_plan_id', 'id');
     }
+
+    public function partialClosures()
+    {
+        return $this->hasMany(WeeklyPlanTaskPartialClosure::class, 'task_weekly_plan_id', 'id');
+    }
 }
