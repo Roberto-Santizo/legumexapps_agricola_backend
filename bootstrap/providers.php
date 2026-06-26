@@ -2,6 +2,8 @@
 
 return [
     App\Providers\Agricola\CdpServiceProvider::class,
+    App\Providers\Agricola\CropInputProvider::class,
+    App\Providers\Agricola\CropParameterProvider::class,
     App\Providers\Agricola\CropServiceProvider::class,
     App\Providers\Agricola\FincaGroupServiceProvider::class,
     App\Providers\Agricola\FincaServiceProvider::class,

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Agricola\CdpController;
 use App\Http\Controllers\Agricola\CropController;
+use App\Http\Controllers\Agricola\CropInputController;
+use App\Http\Controllers\Agricola\CropParameterController;
 use App\Http\Controllers\Agricola\FincaController;
 use App\Http\Controllers\Agricola\FincaGroupController;
 use App\Http\Controllers\Agricola\LoteController;
@@ -32,6 +34,8 @@ Route::middleware('jwt.auth')->group(function () {
     Route::apiResource('/weekly-plan-employees',                        WeeklyPlanEmployeeController::class);
     Route::apiResource('/weekly-plan-task-employees',                   WeeklyPlanTaskEmployeeController::class);
     Route::apiResource('/weekly-plan-task-partial-closures',            WeeklyPlanTaskPartialClosureController::class);
+    Route::apiResource('/crops-inputs',                                 CropInputController::class);
+    Route::apiResource('/crops-parameters',                             CropParameterController::class);
 });
 
 //FUNCTIONALITYS
