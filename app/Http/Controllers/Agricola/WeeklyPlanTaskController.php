@@ -80,9 +80,15 @@ class WeeklyPlanTaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, WeeklyPlanTaskServiceInterface $service)
     {
-        //!IMPLEMENT
+        try {
+            $task = $service->deleteWeeklyPlanTaskById($id);
+
+            return ResponseHandler::success($task, 'Tarea Eleminada Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
     }
 
     public function startWeeklyPlanTask(string $id, WeeklyPlanTaskServiceInterface $service)

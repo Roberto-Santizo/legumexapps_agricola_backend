@@ -41,6 +41,7 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         $group = $request->query('group');
         $cdp = $request->query('cdp');
         $use_dron = $request->query('use_dron');
+        $operation_date = $request->query('operation_date');
 
         if (!$id) throw new BadRequestError("El ID del plan es requerido");
         $query = WeeklyPlanTask::query();
@@ -50,6 +51,7 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         if ($group) $query->where('finca_group_id', $group);
         if ($cdp) $query->where('plantation_control_id', $cdp);
         if ($use_dron) $query->where('use_dron', $use_dron);
+        if ($operation_date) $query->whereDate('operation_date', $operation_date);
 
 
 
@@ -83,7 +85,12 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     #[Override]
     public function deleteWeeklyPlanTaskById(string $id)
     {
-        throw new \Exception('Not implemented');
+        $task = $this->getWeeklyPlanTaskById($id);
+        $task->employees()->delete();
+        $task->partialClosures()->delete();
+        $task->supplies()->delete();
+        $task->delete();
+        return true;
     }
 
     #[Override]
