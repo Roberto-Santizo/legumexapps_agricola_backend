@@ -40,6 +40,7 @@ class WeeklyPlanTasksForCalendarResource extends JsonResource
             'lote' =>               $lote,
             'cdp' =>                $cdp,
             'end' =>                $end,
+            'blocked'=>             false
         ];
     }
 

@@ -21,7 +21,7 @@ class TaskController extends Controller
     {
         try {
             $limit = $request->query('limit');
-            $tasks = $service->getTasks($limit);
+            $tasks = $service->getTasks($limit, $request);
 
             $data = $limit ? new PaginatedTasksResource($tasks) : TaskResource::collection($tasks);
             return ResponseHandler::success($data, 'Tareas Obtenidas Correctamente', 200);

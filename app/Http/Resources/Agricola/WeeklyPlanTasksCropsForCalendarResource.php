@@ -20,7 +20,7 @@ class WeeklyPlanTasksCropsForCalendarResource extends JsonResource
         $lote       =               $this->cdp->lote->name ?? '';
         $cdp        =               $this->cdp ? $this->cdp->name : '';
         $title      =               $task_name . ' - ' . $lote;
-        $date      =                $this->operation_date->format('Y-m-d');
+        $date       =               $this->operation_date->format('Y-m-d');
         $editable   =               false;
 
 
@@ -34,6 +34,7 @@ class WeeklyPlanTasksCropsForCalendarResource extends JsonResource
             'lote' =>               $lote,
             'cdp' =>                $cdp,
             'end' =>                $date,
+            'blocked'=>             true
         ];
     }
 }

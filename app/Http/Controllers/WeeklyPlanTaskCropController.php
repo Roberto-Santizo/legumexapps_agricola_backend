@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHandler;
 use App\Http\Requests\Agricola\WeeklyPlanTaskCrop\CreateWeeklyPlanTaskCropRequest;
+use App\Http\Resources\Agricola\WeeklyPlanTaskCropResource;
 use App\Http\Resources\Agricola\WeeklyPlanTasksCropsForCalendarResource;
 use App\Interfaces\Agricola\WeeklyPlanTaskCropServiceInterface;
 use Illuminate\Http\Request;
@@ -18,8 +19,9 @@ class WeeklyPlanTaskCropController extends Controller
         try {
             $weeklyPlanId = $request->query('weeklyPlanId');
             $result = $service->getWeeklyPlanTasksCrop($weeklyPlanId);
+            $data = WeeklyPlanTaskCropResource::collection($result);
 
-            return ResponseHandler::success($result, 'Tareas de Cosecha Obtenidas Correctamente', 200);
+            return ResponseHandler::success($data, 'Tareas de Cosecha Obtenidas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
@@ -48,7 +50,7 @@ class WeeklyPlanTaskCropController extends Controller
         try {
             $result = $service->getWeeklyPlanTaskCropById($id);
 
-            return ResponseHandler::success($result, 'Tarea de Cosecha Obtenida Correctamente', 200);
+            return ResponseHandler::success(new WeeklyPlanTaskCropResource($result), 'Tarea de Cosecha Obtenida Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

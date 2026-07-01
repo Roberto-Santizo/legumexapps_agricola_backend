@@ -2,10 +2,12 @@
 
 namespace App\Interfaces\Agricola;
 
+use Illuminate\Http\Request;
+
 interface TaskServiceInterface
 {
     public function createTask(array $data);
-    public function getTasks(string | null $limit);
+    public function getTasks(?string $limit, Request $request);
     public function getTaskById(string $id);
     public function getTaskByCode(string $code);
     public function updateTaskById(array $data, string $id);
