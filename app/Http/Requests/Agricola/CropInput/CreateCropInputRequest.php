@@ -26,7 +26,6 @@ class CreateCropInputRequest extends FormRequest
             'crop_id' =>            ['required', 'numeric', 'exists:crops,id'],
             'key' =>                ['required', 'string'],
             'label' =>              ['required', 'string'],
-            'required' =>           ['required', 'numeric'],
             'default_value' =>      ['required', 'numeric']
         ];
     }
@@ -43,9 +42,6 @@ class CreateCropInputRequest extends FormRequest
 
             'label.required' => 'El campo etiqueta es obligatorio.',
             'label.string' => 'El campo etiqueta debe ser una cadena de texto.',
-
-            'required.required' => 'El campo requerido es obligatorio.',
-            'required.numeric' => 'El campo requerido debe ser un valor numérico.',
 
             'default_value.required' => 'El campo valor por defecto es obligatorio.',
             'default_value.numeric' => 'El campo valor por defecto debe ser un valor numérico.',

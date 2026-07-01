@@ -13,6 +13,7 @@ class CropInputService implements CropInputServiceInterface
     #[Override]
     public function createCropInput(array $data)
     {
+        $data['required'] = true;
         $input = CropInput::create($data);
         return $input;
     }
@@ -37,6 +38,7 @@ class CropInputService implements CropInputServiceInterface
     public function updateCropInputById(string $id, array $data)
     {
         $crop = $this->getCropInputById($id);
+        $data['required'] = true;
         $crop->update($data);
         return true;
     }

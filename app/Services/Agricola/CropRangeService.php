@@ -21,7 +21,7 @@ class CropRangeService implements CropRangesServiceInterface
     public function getCropRanges(?string $cropId)
     {
         if (!$cropId) throw new BadRequestError("El ID del cultivo es necesario");
-        $ranges = CropRange::where('crop_id', $cropId)->get(['crop_id', 'key', 'max_value', 'min_value', 'result']);
+        $ranges = CropRange::where('crop_id', $cropId)->get(['id', 'crop_id', 'key', 'max_value', 'min_value', 'result']);
         return $ranges;
     }
 
