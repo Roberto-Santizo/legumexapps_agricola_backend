@@ -12,7 +12,7 @@ class WeeklyPlanTaskCrop extends Model
     protected $table = 'task_crop_weekly_plans';
 
     protected $casts = [
-        'operation_date' => 'datetime'
+        'operation_date' => 'datetime',
     ];
 
     public function weeklyPlan()
@@ -28,5 +28,10 @@ class WeeklyPlanTaskCrop extends Model
     public function cdp()
     {
         return $this->belongsTo(Cdp::class, 'plantation_control_id', 'id');
+    }
+
+    public function employees()
+    {
+        return $this->hasMany(WeeklyPlanTaskCropEmployee::class, 'task_crop_weekly_plan_id', 'id');
     }
 }

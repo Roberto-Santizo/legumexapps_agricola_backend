@@ -24,13 +24,13 @@ class UpdateCdpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', Rule::unique('plantation_controls', 'name')->ignore($this->route('cdp'), 'name')],
-            'total_plants' => ['required', 'numeric'],
-            'lote_id' => ['required', 'numeric', 'exists:lotes,id'],
-            'recipe_id' => ['required', 'numeric', 'exists:recipes,id'],
-            'crop_id' => ['required', 'numeric', 'exists:crops,id'],
-            'start_date' => ['required', 'date'],
-            'end_date' => ['sometimes', 'date']
+            'name' =>           ['required', Rule::unique('plantation_controls', 'name')->ignore($this->route('cdp'), 'name')],
+            'total_plants' =>   ['required', 'numeric'],
+            'lote_id' =>        ['required', 'numeric', 'exists:lotes,id'],
+            'recipe_id' =>      ['required', 'numeric', 'exists:recipes,id'],
+            'crop_id' =>        ['required', 'numeric', 'exists:crops,id'],
+            'start_date' =>     ['required', 'date'],
+            'end_date' =>       ['nullable', 'date']
         ];
     }
 

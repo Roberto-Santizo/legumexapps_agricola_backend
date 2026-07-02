@@ -18,6 +18,7 @@ return [
     App\Providers\Agricola\WeeklyPlanEmployeeServiceProvider::class,
     App\Providers\Agricola\WeeklyPlanServiceProvider::class,
     App\Providers\Agricola\WeeklyPlanTaskCropEmployeeProvider::class,
+    App\Providers\Agricola\WeeklyPlanTaskCropInputProvider::class,
     App\Providers\Agricola\WeeklyPlanTaskCropProvider::class,
     App\Providers\Agricola\WeeklyPlanTaskEmployeeServiceProvider::class,
     App\Providers\Agricola\WeeklyPlanTaskInsumoServiceProvider::class,

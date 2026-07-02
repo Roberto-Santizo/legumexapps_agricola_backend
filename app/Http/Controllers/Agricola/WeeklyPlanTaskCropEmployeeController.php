@@ -77,7 +77,7 @@ class WeeklyPlanTaskCropEmployeeController extends Controller
         try {
             $task = $service->deleteWeeklyPlanTaskCropEmployeeById($id);
 
-            return ResponseHandler::success($task, 'Tarea Eliminada Correctamente', 200);
+            return ResponseHandler::success($task, 'Empleado Eliminado Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

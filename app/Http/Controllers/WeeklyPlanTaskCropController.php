@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHandler;
+use App\Http\Requests\Agricola\WeeklyPlanTaskCrop\CloseWeeklyPlanTaskCrop;
 use App\Http\Requests\Agricola\WeeklyPlanTaskCrop\CreateWeeklyPlanTaskCropRequest;
 use App\Http\Resources\Agricola\WeeklyPlanTaskCropResource;
 use App\Http\Resources\Agricola\WeeklyPlanTasksCropGroupedByCdpResource;
 use App\Http\Resources\Agricola\WeeklyPlanTasksCropsForCalendarResource;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
+use App\Interfaces\Agricola\WeeklyPlanTaskCropInputServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskCropServiceInterface;
 use Illuminate\Http\Request;
 
@@ -114,7 +116,32 @@ class WeeklyPlanTaskCropController extends Controller
     {
         try {
             $result = $service->getWeeklyPlanTasksCropByCdp($weeklyPlanId, $cdp);
+
             return ResponseHandler::success(WeeklyPlanTaskCropResource::collection($result), 'Tareas de Cosecha Obtenidas Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function startWeeklyPlanTaskCrop(string $id, WeeklyPlanTaskCropServiceInterface $service)
+    {
+        try {
+            $service->startWeeklyPlanTaskCrop($id);
+
+            return ResponseHandler::success(true, 'Tarea de Cosecha Iniciada Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function closeWeeklyPlanTaskCrop(CloseWeeklyPlanTaskCrop $request, string $id, WeeklyPlanTaskCropServiceInterface $service, WeeklyPlanTaskCropInputServiceInterface $inputService)
+    {
+        try {
+            $data = $request->validated();
+
+            $service->closeWeeklyPlanTaskCrop($id, $data, $inputService);
+
+            return ResponseHandler::success($data, 'Tarea de Cosecha Cerrada Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
