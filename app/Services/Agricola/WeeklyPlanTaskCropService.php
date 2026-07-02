@@ -6,6 +6,7 @@ use App\Errors\BadRequestError;
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\WeeklyPlanTaskCropServiceInterface;
 use App\Models\Agricola\WeeklyPlanTaskCrop;
+use Carbon\Carbon;
 use Override;
 
 class WeeklyPlanTaskCropService implements WeeklyPlanTaskCropServiceInterface
@@ -47,5 +48,17 @@ class WeeklyPlanTaskCropService implements WeeklyPlanTaskCropServiceInterface
         $task = $this->getWeeklyPlanTaskCropById($id);
         $task->delete();
         return true;
+    }
+
+    #[Override]
+    public function getWeeklyPlanTasksCropByCdp(string $weeklyPlanId, string $cdp)
+    {
+        $tasks = WeeklyPlanTaskCrop::where('weekly_plan_id', $weeklyPlanId)
+            ->where('operation_date', Carbon::today())
+            ->whereHas('cdp', fn($q) => $q->where('name', $cdp))
+            ->with('cdp')
+            ->get();
+
+        return $tasks;
     }
 }
