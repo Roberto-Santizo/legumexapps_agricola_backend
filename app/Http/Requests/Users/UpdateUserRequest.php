@@ -4,8 +4,9 @@ namespace App\Http\Requests\Users;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreateUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,10 +14,7 @@ class CreateUserRequest extends FormRequest
     public function authorize(): bool
     {
         $role = $this->user()->role;
-        if ($role != 'admin') {
-            return false;
-        }
-
+        if($role != 'admin') return false;
         return true;
     }
 
@@ -27,19 +25,14 @@ class CreateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', 'unique:users,username'],
-            'role' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:8'],
+       return [
+            'name' =>           ['required', 'string', 'max:255'],
+            'username' =>       ['required', 'string', 'max:255'],
+            'role' =>           ['required', 'string'],
+            'password' =>       ['required', 'string', 'min:8'],
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return [

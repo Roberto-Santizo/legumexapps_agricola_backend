@@ -6,6 +6,7 @@ use App\Helpers\ErrorHandler;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Permissions\CreatePermissionRequest;
+use App\Http\Requests\Permissions\UpdatePermissionRequest;
 use App\Http\Resources\Permissions\PaginatedPermissionsResource;
 use App\Http\Resources\Permissions\PermissionsResource;
 use App\Interfaces\Permissions\PermissionServiceInterface;
@@ -40,6 +41,29 @@ class PermissionController extends Controller
             $service->createPermission($data);
 
             return ResponseHandler::success(null, 'Permiso Creado Correctamente', 201);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function show(string $id, PermissionServiceInterface $service)
+    {
+        try {
+            $permission = $service->getPermissionById($id);
+
+            return ResponseHandler::success($permission, 'Permiso Obtenido Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function update(UpdatePermissionRequest $request, string $id, PermissionServiceInterface $service)
+    {
+        try {
+             $data = $request->validated();
+            $permission = $service->updatePermissionById($data, $id);
+
+            return ResponseHandler::success($permission, 'Permiso Actualizado Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

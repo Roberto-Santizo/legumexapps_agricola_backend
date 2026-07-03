@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Agricola;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\WeeklyPlanTaskCropInput\CreateParameterRequest;
+use App\Http\Resources\Agricola\WeeklyPlanTaskCropInputResource;
 use App\Interfaces\Agricola\WeeklyPlanTaskCropInputServiceInterface;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,7 @@ class WeeklyPlanTaskCropInputController extends Controller
             $taskId = $request->query('taskId');
             $result = $service->getInputs($taskId);
 
-            return ResponseHandler::success($result, 'Parametros Obtenido Correctamente', 200);
+            return ResponseHandler::success(WeeklyPlanTaskCropInputResource::collection($result), 'Parametros Obtenido Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
@@ -48,7 +49,7 @@ class WeeklyPlanTaskCropInputController extends Controller
         try {
             $result = $service->getInputById($id);
 
-            return ResponseHandler::success($result, 'Parametro Obtenido Correctamente', 200);
+            return ResponseHandler::success(new WeeklyPlanTaskCropInputResource($result), 'Parametro Obtenido Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

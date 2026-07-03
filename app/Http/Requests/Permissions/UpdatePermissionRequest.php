@@ -4,8 +4,9 @@ namespace App\Http\Requests\Permissions;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreatePermissionRequest extends FormRequest
+class UpdatePermissionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +29,7 @@ class CreatePermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'unique:permissions,name'],
+            'name' => ['required', 'string', 'max:255', Rule::unique('permissions', 'name')->ignore($this->route('permission'), 'name')],
         ];
     }
 
