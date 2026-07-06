@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Permissions;
 
-use App\Helpers\ErrorHandler;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Permissions\CreatePermissionRequest;
@@ -60,7 +59,7 @@ class PermissionController extends Controller
     public function update(UpdatePermissionRequest $request, string $id, PermissionServiceInterface $service)
     {
         try {
-             $data = $request->validated();
+            $data = $request->validated();
             $permission = $service->updatePermissionById($data, $id);
 
             return ResponseHandler::success($permission, 'Permiso Actualizado Correctamente', 200);

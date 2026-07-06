@@ -12,6 +12,12 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
+    
+    public function permissions()
+    {
+        return $this->hasMany(UserPermission::class);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

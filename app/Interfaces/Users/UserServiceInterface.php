@@ -15,4 +15,6 @@ interface UserServiceInterface
     public function getUserByUsername(string $username);
 
     public function updateUserById(array $data, string $id);
+    
+    public function getPermissionsByUser(string $username);
 }

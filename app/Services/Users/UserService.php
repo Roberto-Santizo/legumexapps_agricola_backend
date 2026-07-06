@@ -61,4 +61,12 @@ class UserService implements UserServiceInterface
 
         return true;
     }
+
+    #[Override]
+    public function getPermissionsByUser(string $username)
+    {
+        $user = $this->getUserByUsername($username);
+        return $user->permissions;
+    }
+    
 }

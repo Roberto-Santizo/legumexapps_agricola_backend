@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 use App\Http\Resources\Users\PaginatedUsersResource;
+use App\Http\Resources\Users\UserPermissionResource;
 use App\Http\Resources\Users\UserResource;
 use App\Interfaces\Users\UserServiceInterface;
 use Illuminate\Http\Request;
@@ -22,7 +23,6 @@ class UserController extends Controller
             $limit = $request->query('limit');
             $users = $service->getUsers($limit, $request);
             $data = $limit ? new PaginatedUsersResource($users) : UserResource::collection($users);
-
 
             return ResponseHandler::success($data, 'Usuarios Obtenidos Correctamente', 200);
         } catch (\Throwable $th) {
@@ -69,6 +69,17 @@ class UserController extends Controller
             $user = $service->updateUserById($data, $id);
 
             return ResponseHandler::success($user, 'Usuario Actualizado Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function getUserPermissions(string $username, UserServiceInterface $service)
+    {
+        try {
+            $permissions = $service->getPermissionsByUser($username);
+
+            return ResponseHandler::success(UserPermissionResource::collection($permissions), 'Permisos Obtenidos Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

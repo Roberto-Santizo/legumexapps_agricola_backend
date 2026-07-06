@@ -27,5 +27,6 @@ return [
     App\Providers\AppServiceProvider::class,
     App\Providers\Auth\AuthProvider::class,
     App\Providers\Permissions\PermissionProvider::class,
+    App\Providers\Users\UserPermissionProvider::class,
     App\Providers\Users\UserProvider::class,
 ];
