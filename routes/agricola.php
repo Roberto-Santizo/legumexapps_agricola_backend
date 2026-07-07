@@ -25,22 +25,26 @@ use Illuminate\Support\Facades\Route;
 
 //CRUDS
 Route::middleware('jwt.auth')->group(function () {
-    Route::apiResource('/fincas',                                       FincaController::class);
-    Route::apiResource('/tasks',                                        TaskController::class);
-    Route::apiResource('/lotes',                                        LoteController::class);
-    Route::apiResource('/crops',                                        CropController::class);
-    Route::apiResource('/crops-inputs',                                 CropInputController::class);
-    Route::apiResource('/crops-parameters',                             CropParameterController::class);
-    Route::apiResource('/crops-ranges',                                 CropRangeController::class);
-    Route::apiResource('/crops-calculation-steps',                      CropStepController::class);
-    Route::apiResource('/recipes',                                      RecipeController::class);
-    Route::apiResource('/cdps',                                         CdpController::class);
-    Route::apiResource('/supplies',                                     SupplyController::class);
-    Route::apiResource('/finca-groups',                                 FincaGroupController::class);
+
+    Route::middleware('administrate_agricola')->group(function(){
+        Route::apiResource('/fincas',                                       FincaController::class);
+        Route::apiResource('/tasks',                                        TaskController::class);
+        Route::apiResource('/lotes',                                        LoteController::class);
+        Route::apiResource('/crops',                                        CropController::class);
+        Route::apiResource('/crops-inputs',                                 CropInputController::class);
+        Route::apiResource('/crops-parameters',                             CropParameterController::class);
+        Route::apiResource('/crops-ranges',                                 CropRangeController::class);
+        Route::apiResource('/crops-calculation-steps',                      CropStepController::class);
+        Route::apiResource('/recipes',                                      RecipeController::class);
+        Route::apiResource('/cdps',                                         CdpController::class);
+        Route::apiResource('/supplies',                                     SupplyController::class);
+        Route::apiResource('/finca-groups',                                 FincaGroupController::class);
+        Route::apiResource('/weekly-plan-tasks-crop-inputs',                WeeklyPlanTaskCropInputController::class);
+    });
+    
     Route::apiResource('/weekly-plans',                                 WeeklyPlanController::class);
     Route::apiResource('/weekly-plan-tasks',                            WeeklyPlanTaskController::class);
     Route::apiResource('/weekly-plan-tasks-crops',                      WeeklyPlanTaskCropController::class);
-    Route::apiResource('/weekly-plan-tasks-crop-inputs',                WeeklyPlanTaskCropInputController::class);
     Route::apiResource('/weekly-plan-task-supplies',                    WeeklyPlanTaskInsumoController::class);
     Route::apiResource('/weekly-plan-employees',                        WeeklyPlanEmployeeController::class);
     Route::apiResource('/weekly-plan-task-employees',                   WeeklyPlanTaskEmployeeController::class);
@@ -50,17 +54,26 @@ Route::middleware('jwt.auth')->group(function () {
 
 //FUNCTIONALITYS
 Route::middleware('jwt.auth')->group(function () {
-    //TASKS
-    Route::post('/tasks/uploadFile',                                                [TaskController::class, 'uploadFile']);
-
-    //WEEKLY PLANS
-    Route::post('/weekly-plans/uploadTasks/{id}',                                   [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']);
-
-    //WEEKLY PLANS EMPLOYEE
-    Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',             [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']);
+    Route::middleware('administrate_agricola')->group(function(){
+        //TASKS
+        Route::post('/tasks/uploadFile',                                                [TaskController::class, 'uploadFile']);
+    
+        //WEEKLY PLANS
+        Route::post('/weekly-plans/uploadTasks/{id}',                                   [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']);
+    
+        //WEEKLY PLANS EMPLOYEE
+        Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',             [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']);
+        
+        //PARTIAL CLOSURES
+        Route::post('/weekly-plan-task-partial-closures/addOrUpdate',                   [WeeklyPlanTaskPartialClosureController::class, 'addOrUpdatePartialClosure']);
+        
+        //WEEKLY PLAN TASKS
+        Route::post('/weekly-plan-tasks/cleanTask/{id}',                                [WeeklyPlanTaskController::class, 'cleanWeeklyPlanTask']);
+    });
 
     //FINCA GROUPS
     Route::get('/finca-groups/groupsSummaryByWeeklyPlan/{id}',                      [FincaGroupController::class, 'groupsSummaryByWeeklyPlan']);
+
 
     //WEEKLY PLAN TASKS
     Route::get('/weekly-plan-tasks/getTasksForCalendar/{weeklyPlanId}',             [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksForCalendar']);
@@ -68,7 +81,6 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/weekly-plan-tasks/getTasksByCdp/{weeklyPlanId}/{cdp}',             [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksByCdp']);
     Route::post('/weekly-plan-tasks/startTask/{id}',                                [WeeklyPlanTaskController::class, 'startWeeklyPlanTask']);
     Route::post('/weekly-plan-tasks/closeTask/{id}',                                [WeeklyPlanTaskController::class, 'closeWeeklyPlanTask']);
-    Route::post('/weekly-plan-tasks/cleanTask/{id}',                                [WeeklyPlanTaskController::class, 'cleanWeeklyPlanTask']);
     
     //WEEKLY PLAN TASKS CROP
     Route::get('/weekly-plan-tasks-crops/getTasksForCalendar/{weeklyPlanId}',       [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTasksForCalendar']);
@@ -77,6 +89,5 @@ Route::middleware('jwt.auth')->group(function () {
     Route::post('/weekly-plan-tasks-crops/startTask/{id}',                          [WeeklyPlanTaskCropController::class, 'startWeeklyPlanTaskCrop']);
     Route::post('/weekly-plan-tasks-crops/closeTask/{id}',                          [WeeklyPlanTaskCropController::class, 'closeWeeklyPlanTaskCrop']);
     
-    //PARTIAL CLOSURES
-    Route::post('/weekly-plan-task-partial-closures/addOrUpdate',                   [WeeklyPlanTaskPartialClosureController::class, 'addOrUpdatePartialClosure']);
+  
 });

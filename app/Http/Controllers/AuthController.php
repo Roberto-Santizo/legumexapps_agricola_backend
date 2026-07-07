@@ -24,10 +24,18 @@ class AuthController extends Controller
     public function checkstatus()
     {
         try {
+            
+
             $user = auth()->user();
             $token = JWTAuth::fromUser($user);
 
-            $data = ['name' => $user->name, 'role' => $user->role ?? 'admin', 'token' => $token];
+            $permissions = $user->permissions;
+
+            $formattedPermissions = $permissions->map(function ($permission){
+                return $permission->permission->name;
+            });
+
+            $data = ['name' => $user->name, 'role' => $user->role ?? 'admin', 'token' => $token, 'permissions' => $formattedPermissions];
 
             return ResponseHandler::success($data, 'Usuario Obtenido Correctamente', 200);
         } catch (\Throwable $th) {

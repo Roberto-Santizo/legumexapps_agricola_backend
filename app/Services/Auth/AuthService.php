@@ -17,11 +17,17 @@ class AuthService implements AuthServiceInterface
         }
 
         $user = auth()->user();
+        $permissions = auth()->user()->permissions;
+
+        $formattedPermissions = $permissions->map(function ($permission){
+            return $permission->permission->name;
+        });
 
         return [
             'name' => $user->name,
             'role' => $user->role ?? 'admin',
-            'token' => $token
+            'permissions' => $formattedPermissions,
+            'token' => $token,
         ];
     }
 }

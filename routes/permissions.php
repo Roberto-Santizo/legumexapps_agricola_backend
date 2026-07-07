@@ -5,5 +5,5 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('jwt.auth')->group(function () {
-    Route::apiResource('/permissions', PermissionController::class);
+    Route::apiResource('/permissions', PermissionController::class)->middleware('admin');
 });
