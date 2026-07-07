@@ -6,6 +6,7 @@ use App\Http\Controllers\Agricola\CropInputController;
 use App\Http\Controllers\Agricola\CropParameterController;
 use App\Http\Controllers\Agricola\CropRangeController;
 use App\Http\Controllers\Agricola\CropStepController;
+use App\Http\Controllers\Agricola\DashboardController;
 use App\Http\Controllers\Agricola\FincaController;
 use App\Http\Controllers\Agricola\FincaGroupController;
 use App\Http\Controllers\Agricola\LoteController;
@@ -69,11 +70,14 @@ Route::middleware('jwt.auth')->group(function () {
         
         //WEEKLY PLAN TASKS
         Route::post('/weekly-plan-tasks/cleanTask/{id}',                                [WeeklyPlanTaskController::class, 'cleanWeeklyPlanTask']);
+
+        //DASHBOARD
+        Route::get('/dashboard/summaryTasksByFinca',                                    [DashboardController::class, 'summaryTasksByFinca']);
+        Route::get('/dashboard/activeTasks',                                            [DashboardController::class, 'getActiveTasks']);
     });
 
     //FINCA GROUPS
     Route::get('/finca-groups/groupsSummaryByWeeklyPlan/{id}',                      [FincaGroupController::class, 'groupsSummaryByWeeklyPlan']);
-
 
     //WEEKLY PLAN TASKS
     Route::get('/weekly-plan-tasks/getTasksForCalendar/{weeklyPlanId}',             [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksForCalendar']);
@@ -88,6 +92,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/weekly-plan-tasks-crops/getTasksByCdp/{weeklyPlanId}/{cdp}',       [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTasksCropByCdp']);
     Route::post('/weekly-plan-tasks-crops/startTask/{id}',                          [WeeklyPlanTaskCropController::class, 'startWeeklyPlanTaskCrop']);
     Route::post('/weekly-plan-tasks-crops/closeTask/{id}',                          [WeeklyPlanTaskCropController::class, 'closeWeeklyPlanTaskCrop']);
+    
     
   
 });

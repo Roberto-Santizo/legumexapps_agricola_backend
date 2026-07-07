@@ -7,6 +7,7 @@ return [
     App\Providers\Agricola\CropRangesProvider::class,
     App\Providers\Agricola\CropServiceProvider::class,
     App\Providers\Agricola\CropStepProvider::class,
+    App\Providers\Agricola\DashboardProvider::class,
     App\Providers\Agricola\FincaGroupServiceProvider::class,
     App\Providers\Agricola\FincaServiceProvider::class,
     App\Providers\Agricola\LoteProvider::class,
