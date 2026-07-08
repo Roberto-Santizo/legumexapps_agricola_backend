@@ -116,13 +116,13 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         $task = $this->getWeeklyPlanTaskById($id);
         $taskSupplies = $task->supplies()->where('task_weekly_plan_id', '=', $id)->where('used_quantity', '=', null)->get();
         if ($taskSupplies->count() > 0) throw new NotAcceptable("La tarea cuenta con insumos sin cerrar");
-        if ($task->end_date) throw new BadRequestError("La tarea ya fue cerrada");
+        // if ($task->end_date) throw new BadRequestError("La tarea ya fue cerrada");
 
 
         $task->end_date = Carbon::now();
         $task->save();
 
-        return true;
+        return $task;
     }
 
     #[Override]
@@ -163,5 +163,12 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
             ->get();
 
         return $tasks;
+    }
+
+    #[Override]
+    public function getWeeklyPlanTaskPayments(string $id)
+    {
+        $task = $this->getWeeklyPlanTaskById($id);
+        return $task->payments()->select(['id', 'name', 'code', 'hours', 'amount', 'date', 'theorical_hours'])->get();
     }
 }

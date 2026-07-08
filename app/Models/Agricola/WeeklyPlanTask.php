@@ -17,6 +17,8 @@ class WeeklyPlanTask extends Model
         'end_date' => 'datetime'
     ];
 
+    //RELATIONS 
+
     public function weeklyPlan()
     {
         return $this->belongsTo(WeeklyPlan::class, 'weekly_plan_id', 'id');
@@ -50,5 +52,19 @@ class WeeklyPlanTask extends Model
     public function partialClosures()
     {
         return $this->hasMany(WeeklyPlanTaskPartialClosure::class, 'task_weekly_plan_id', 'id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(WeeklyPlanTaskEmployeePayment::class, 'task_plan_id','id');
+    }
+
+
+
+    //FUNCTIONALITYS
+
+    public function total_hours()
+    {
+        return $this->start_date->diffInHours($this->end_date);
     }
 }

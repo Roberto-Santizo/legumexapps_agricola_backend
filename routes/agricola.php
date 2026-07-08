@@ -10,6 +10,7 @@ use App\Http\Controllers\Agricola\DashboardController;
 use App\Http\Controllers\Agricola\FincaController;
 use App\Http\Controllers\Agricola\FincaGroupController;
 use App\Http\Controllers\Agricola\LoteController;
+use App\Http\Controllers\Agricola\RecalculateTask;
 use App\Http\Controllers\Agricola\RecipeController;
 use App\Http\Controllers\Agricola\SupplyController;
 use App\Http\Controllers\Agricola\TaskController;
@@ -70,6 +71,8 @@ Route::middleware('jwt.auth')->group(function () {
         
         //WEEKLY PLAN TASKS
         Route::post('/weekly-plan-tasks/cleanTask/{id}',                                [WeeklyPlanTaskController::class, 'cleanWeeklyPlanTask']);
+        Route::get('/weekly-plan-tasks/getPayments/{id}',                               [WeeklyPlanTaskController::class, 'getWeeklyPlanTaskPayments']);
+        Route::post('/weekly-plan-tasks/recalculate/{id}',                              RecalculateTask::class);
 
         //DASHBOARD
         Route::get('/dashboard/summaryTasksByFinca',                                    [DashboardController::class, 'summaryTasksByFinca']);
