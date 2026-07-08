@@ -95,7 +95,4 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/weekly-plan-tasks-crops/getTasksByCdp/{weeklyPlanId}/{cdp}',       [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTasksCropByCdp']);
     Route::post('/weekly-plan-tasks-crops/startTask/{id}',                          [WeeklyPlanTaskCropController::class, 'startWeeklyPlanTaskCrop']);
     Route::post('/weekly-plan-tasks-crops/closeTask/{id}',                          [WeeklyPlanTaskCropController::class, 'closeWeeklyPlanTaskCrop']);
-    
-    
-  
 });
