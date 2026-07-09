@@ -34,4 +34,14 @@ class WeeklyPlanTaskCrop extends Model
     {
         return $this->hasMany(WeeklyPlanTaskCropEmployee::class, 'task_crop_weekly_plan_id', 'id');
     }
+
+    public function weeklyPlanTaskCropInputs()
+    {
+        return $this->hasMany(WeeklyPlanTaskCropInput::class, 'task_crop_weekly_plan_id', 'id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(WeeklyPlanTaskEmployeePayment::class, 'task_crop_id', 'id');
+    }
 }

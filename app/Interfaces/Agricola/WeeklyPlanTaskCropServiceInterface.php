@@ -12,4 +12,5 @@ interface WeeklyPlanTaskCropServiceInterface
     public function getWeeklyPlanTasksCropByCdp(string $weeklyPlanId, string $cdp);
     public function startWeeklyPlanTaskCrop(string $id);
     public function closeWeeklyPlanTaskCrop(string $id, array $data, WeeklyPlanTaskCropInputServiceInterface $service);
+    public function getWeeklyPlanTaskCropPayments(string $id);
 }

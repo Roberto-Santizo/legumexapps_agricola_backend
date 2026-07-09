@@ -41,9 +41,17 @@ class WeeklyPlanService implements WeeklyPlanServiceInterface
     }
 
     #[Override]
-    public function getWeeklyPlans(?string $limit)
+    public function getWeeklyPlans(?string $limit, mixed $user)
     {
         $query = WeeklyPlan::query();
+        
+        if($user->role == 'auxagricola'){
+            $finca = $user->permissions()->first()->permission->name;
+            $query->whereHas('finca', function($q) use($finca){
+                $q->where('name', 'LIKE', '%'.$finca.'%');
+            });
+        }
+        
         $query->orderBy('created_at', 'DESC');
         if ($limit) return $query->paginate($limit);
 

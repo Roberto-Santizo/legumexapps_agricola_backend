@@ -74,6 +74,10 @@ Route::middleware('jwt.auth')->group(function () {
         Route::get('/weekly-plan-tasks/getPayments/{id}',                               [WeeklyPlanTaskController::class, 'getWeeklyPlanTaskPayments']);
         Route::post('/weekly-plan-tasks/recalculate/{id}',                              RecalculateTask::class);
 
+        //WEEKLY PLAN TASKS CROP
+        Route::post('/weekly-plan-tasks-crops/calculate/{id}',                          [WeeklyPlanTaskCropController::class, 'calculateWeeklyPlanTaskCrop']);
+        Route::get('/weekly-plan-tasks-crops/getPayments/{id}',                         [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTaskCropPayments']);
+
         //DASHBOARD
         Route::get('/dashboard/summaryTasksByFinca',                                    [DashboardController::class, 'summaryTasksByFinca']);
         Route::get('/dashboard/activeTasks',                                            [DashboardController::class, 'getActiveTasks']);

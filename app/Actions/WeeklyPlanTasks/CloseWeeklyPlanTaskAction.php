@@ -2,6 +2,7 @@
 
 namespace App\Actions\WeeklyPlanTasks;
 
+use App\Errors\BadRequestError;
 use App\Models\Agricola\Finca;
 use App\Models\Agricola\WeeklyPlan;
 use App\Models\Agricola\WeeklyPlanTask;
@@ -18,7 +19,9 @@ class CloseWeeklyPlanTaskAction
        
         $this->validateTaskPayments($task);
 
-        if ($task->partialClosures->count() == 0) {
+        if(!$task->end_date) throw new BadRequestError("La tarea no se ha finalizado");
+
+        if ($task->partialClosures->count() == 0 && !$task->use_dron) {
             $this->closeTaskWithNoClosures($task);
         }else{
             $this->closeTaskWithClosures($task);
@@ -160,8 +163,18 @@ class CloseWeeklyPlanTaskAction
         $startOfWeek = Carbon::now()->setISODate($weeklyPlan->year, $weeklyPlan->week)->startOfWeek();
         $endOfWeek = Carbon::now()->setISODate($weeklyPlan->year, $weeklyPlan->week)->endOfWeek();
 
-        $url = env('BIOMETRICO_URL')."/transactions/{$weeklyPlan->finca->terminal_id}?start_date={$startOfWeek}&end_date={$endOfWeek}";
-        $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url)->collect();
+        if($weeklyPlan->finca->code == 'FLS'){
+            $url = env('BIOMETRICO_URL') . "/transactions/{$weeklyPlan->finca->terminal_id}?start_date={$startOfWeek->format('Y-m-d')}&end_date={$endOfWeek->format('Y-m-d')}";
+            $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url);
+            $url2 = env('BIOMETRICO_URL') . "/transactions/1009?start_date={$startOfWeek->format('Y-m-d')}&end_date={$endOfWeek->format('Y-m-d')}";
+            $entries2 = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url2);
+
+            $entries = $entries->collect()->merge($entries2->collect());
+        }else{
+            $url = env('BIOMETRICO_URL')."/transactions/{$weeklyPlan->finca->terminal_id}?start_date={$startOfWeek}&end_date={$endOfWeek}";
+            $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url)->collect();
+        }
+
 
         return $entries;
     }
@@ -170,8 +183,17 @@ class CloseWeeklyPlanTaskAction
     {
         $entries = collect();
 
-        $url = env('BIOMETRICO_URL')."/transactions/{$finca->terminal_id}?start_date={$operation_date}&end_date={$operation_date}";
-        $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url)->collect();
+        if($finca->code == 'FLS'){
+            $url = env('BIOMETRICO_URL') . "/transactions/{$finca->terminal_id}?start_date={$operation_date}&end_date={operation_date}";
+            $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url);
+            $url2 = env('BIOMETRICO_URL') . "/transactions/1009?start_date={$operation_date}&end_date={$operation_date}";
+            $entries2 = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url2);
+
+            $entries = $entries->collect()->merge($entries2->collect());
+        }else{
+            $url = env('BIOMETRICO_URL')."/transactions/{$finca->terminal_id}?start_date={$operation_date}&end_date={$operation_date}";
+            $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url)->collect();
+        }
 
         return $entries;
     }

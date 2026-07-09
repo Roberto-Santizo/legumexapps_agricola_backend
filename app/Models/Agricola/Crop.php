@@ -9,5 +9,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Crop extends Model
 {
-    
+    public function inputs()
+    {
+        return $this->hasMany(CropInput::class);
+    }
+
+    public function parameters()
+    {
+        return $this->hasMany(CropParameter::class);
+    }
+
+    public function ranges()
+    {
+        return $this->hasMany(CropRange::class);
+    }
+
+    public function steps()
+    {
+        return $this->hasMany(CropStep::class);
+    }
 }

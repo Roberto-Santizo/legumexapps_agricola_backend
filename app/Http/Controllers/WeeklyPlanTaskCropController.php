@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\WeeklyPlanTasks\CloseWeeklyPlanTaskCropAction;
 use App\Helpers\ResponseHandler;
 use App\Http\Requests\Agricola\WeeklyPlanTaskCrop\CloseWeeklyPlanTaskCrop;
 use App\Http\Requests\Agricola\WeeklyPlanTaskCrop\CreateWeeklyPlanTaskCropRequest;
 use App\Http\Resources\Agricola\WeeklyPlanTaskCropResource;
+use App\Http\Resources\Agricola\WeeklyPlanTaskPaymentResource;
 use App\Http\Resources\Agricola\WeeklyPlanTasksCropGroupedByCdpResource;
 use App\Http\Resources\Agricola\WeeklyPlanTasksCropsForCalendarResource;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
@@ -142,6 +144,28 @@ class WeeklyPlanTaskCropController extends Controller
             $service->closeWeeklyPlanTaskCrop($id, $data, $inputService);
 
             return ResponseHandler::success($data, 'Tarea de Cosecha Cerrada Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function calculateWeeklyPlanTaskCrop(string $id, WeeklyPlanTaskCropServiceInterface $service, CloseWeeklyPlanTaskCropAction $action)
+    {
+        try {
+            $task = $service->getWeeklyPlanTaskCropById($id);
+            $action->execute($task);
+            return ResponseHandler::success(null, 'Tarea de Cosecha Calculada Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function getWeeklyPlanTaskCropPayments(string $id, WeeklyPlanTaskCropServiceInterface $service)
+    {
+        try {
+            $payments = $service->getWeeklyPlanTaskCropPayments($id);
+
+            return ResponseHandler::success(WeeklyPlanTaskPaymentResource::collection($payments), 'Pagos Obtenidos Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

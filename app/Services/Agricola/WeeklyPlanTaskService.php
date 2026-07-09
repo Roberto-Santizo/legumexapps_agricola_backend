@@ -8,6 +8,7 @@ use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskInsumoServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskServiceInterface;
+use App\Models\Agricola\WeeklyPlanEmployee;
 use App\Models\Agricola\WeeklyPlanTask;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -97,8 +98,10 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     public function startWeeklyPlanTask(string $id)
     {
         $task = $this->getWeeklyPlanTaskById($id);
+        $employees = WeeklyPlanEmployee::where('weekly_plan_id', $task->weekly_plan_id)->where('finca_group_id', $task->finca_group_id)->get();
         if (!$task->group && !$task->use_dron) throw new BadRequestError("La tarea no cuenta con un grupo asignado");
-
+        if($employees->count() == 0) throw new BadRequestError("El grupo no cuenta con empleados asignados");
+        
         if(!$task->use_dron){
             $employees = $task->group->employees()->where('weekly_plan_id', $task->weekly_plan_id)->get();
             $this->employeeService->insertEmployeesToWeeklyPlanTask($employees, $task->id);
@@ -116,7 +119,7 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         $task = $this->getWeeklyPlanTaskById($id);
         $taskSupplies = $task->supplies()->where('task_weekly_plan_id', '=', $id)->where('used_quantity', '=', null)->get();
         if ($taskSupplies->count() > 0) throw new NotAcceptable("La tarea cuenta con insumos sin cerrar");
-        // if ($task->end_date) throw new BadRequestError("La tarea ya fue cerrada");
+        if ($task->end_date) throw new BadRequestError("La tarea ya fue cerrada");
 
 
         $task->end_date = Carbon::now();
@@ -157,8 +160,11 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     public function getWeeklyPlanTasksByCdp(string $weeklyPlanId, string $cdp)
     {
         $tasks = WeeklyPlanTask::where('weekly_plan_id', $weeklyPlanId)
-            ->where('operation_date', Carbon::today())
-            ->whereHas('cdp', fn($q) => $q->where('name', $cdp))
+            ->where(function ($query) {
+                $query->whereDate('operation_date', Carbon::today())
+                    ->orWhereNotNull('start_date')->whereNull('end_date');
+            })
+            ->whereHas('cdp', fn ($q) => $q->where('name', $cdp))
             ->with('cdp')
             ->get();
 

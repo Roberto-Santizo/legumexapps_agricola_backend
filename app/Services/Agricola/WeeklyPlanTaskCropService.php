@@ -106,4 +106,11 @@ class WeeklyPlanTaskCropService implements WeeklyPlanTaskCropServiceInterface
 
         return true;
     }
+
+    #[Override]
+    public function getWeeklyPlanTaskCropPayments(string $id)
+    {
+        $task = $this->getWeeklyPlanTaskCropById($id);
+        return $task->payments;
+    }
 }
