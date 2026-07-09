@@ -58,9 +58,10 @@ class WeeklyPlanTaskInsumoService implements WeeklyPlanTaskInsumoServiceInterfac
     }
 
     #[Override]
-    public function updateInsumoById(array $data, string $id)
+    public function updateInsumoById(array $data, string $id, string $role)
     {
         $insumo = $this->getInsumoById($id);
+        if($insumo->used_quantity && $role == 'auxagricola') throw new BadRequestError("El insumo ya fue cerrado");
         $insumo->update($data);
         return $insumo;
     }

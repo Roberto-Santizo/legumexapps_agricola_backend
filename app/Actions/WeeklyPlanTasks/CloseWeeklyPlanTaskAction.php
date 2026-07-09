@@ -184,7 +184,7 @@ class CloseWeeklyPlanTaskAction
         $entries = collect();
 
         if($finca->code == 'FLS'){
-            $url = env('BIOMETRICO_URL') . "/transactions/{$finca->terminal_id}?start_date={$operation_date}&end_date={operation_date}";
+            $url = env('BIOMETRICO_URL') . "/transactions/{$finca->terminal_id}?start_date={$operation_date}&end_date={$operation_date}";
             $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url);
             $url2 = env('BIOMETRICO_URL') . "/transactions/1009?start_date={$operation_date}&end_date={$operation_date}";
             $entries2 = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url2);

@@ -22,7 +22,7 @@ class SummaryTasksByFincaResource extends JsonResource
             'finca' =>          $this->finca->name,
             'total'=>           $summary['total'],
             'finished'=>        $summary['finished'],
-            'percentage'=>      round($percentage,2)
+            'percentage'=>      round($percentage*100,2)
         ];
     }
 }

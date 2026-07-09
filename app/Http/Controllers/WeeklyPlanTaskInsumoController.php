@@ -55,8 +55,9 @@ class WeeklyPlanTaskInsumoController extends Controller
     {
         try {
             $data = $request->validated();
+            $role = auth()->user()->role;
 
-            $insumo = $service->updateInsumoById($data, $id);
+            $insumo = $service->updateInsumoById($data, $id, $role);
             return ResponseHandler::success($insumo, 'Insumo Actualizado Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);

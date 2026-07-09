@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Reports;
 
+use App\Exports\Agricola\WeeklyPlanificationReport;
+use App\Exports\Agricola\WeeklyPlanillaReport;
 use App\Exports\Agricola\WeeklyPlanPaymentDetails;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
@@ -29,8 +31,8 @@ class ReportController extends Controller
     {
         try {
             $plan = $service->getWeeklyPlanById($id);
-            $file = Excel::raw(new WeeklyPlanPaymentDetails($plan), \Maatwebsite\Excel\Excel::XLSX);
-            $filename = "Detalle de Personal S{$plan->week} {$plan->finca->name}";
+            $file = Excel::raw(new WeeklyPlanificationReport($plan), \Maatwebsite\Excel\Excel::XLSX);
+            $filename = "Detalle de Tareas S{$plan->week} {$plan->finca->name}";
 
             $response = [ 'file' => base64_encode($file), 'fileName' => $filename ];
 
@@ -44,8 +46,8 @@ class ReportController extends Controller
     {
         try {
             $plan = $service->getWeeklyPlanById($id);
-            $file = Excel::raw(new WeeklyPlanPaymentDetails($plan), \Maatwebsite\Excel\Excel::XLSX);
-            $filename = "Detalle de Personal S{$plan->week} {$plan->finca->name}";
+            $file = Excel::raw(new WeeklyPlanillaReport($plan), \Maatwebsite\Excel\Excel::XLSX);
+            $filename = "Planilla S{$plan->week} {$plan->finca->name}";
 
             $response = [ 'file' => base64_encode($file), 'fileName' => $filename ];
 

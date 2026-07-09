@@ -60,6 +60,6 @@ class WeeklyPlanPaymentDetails implements FromCollection, WithHeadings, WithTitl
 
     public function title(): string
     {
-        return 'Detalle Tareas';
+        return 'Detalle Empleados';
     }
 }

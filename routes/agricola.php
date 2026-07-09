@@ -39,11 +39,11 @@ Route::middleware('jwt.auth')->group(function () {
         Route::apiResource('/crops-calculation-steps',                      CropStepController::class);
         Route::apiResource('/recipes',                                      RecipeController::class);
         Route::apiResource('/cdps',                                         CdpController::class);
-        Route::apiResource('/supplies',                                     SupplyController::class);
         Route::apiResource('/finca-groups',                                 FincaGroupController::class);
         Route::apiResource('/weekly-plan-tasks-crop-inputs',                WeeklyPlanTaskCropInputController::class);
-    });
-    
+        });
+        
+    Route::apiResource('/supplies',                                     SupplyController::class);
     Route::apiResource('/weekly-plans',                                 WeeklyPlanController::class);
     Route::apiResource('/weekly-plan-tasks',                            WeeklyPlanTaskController::class);
     Route::apiResource('/weekly-plan-tasks-crops',                      WeeklyPlanTaskCropController::class);
