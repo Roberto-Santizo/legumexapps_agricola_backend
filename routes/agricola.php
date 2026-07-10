@@ -14,6 +14,7 @@ use App\Http\Controllers\Agricola\RecalculateTask;
 use App\Http\Controllers\Agricola\RecipeController;
 use App\Http\Controllers\Agricola\SupplyController;
 use App\Http\Controllers\Agricola\TaskController;
+use App\Http\Controllers\Agricola\TaskGuidelinesController;
 use App\Http\Controllers\Agricola\WeeklyPlanController;
 use App\Http\Controllers\Agricola\WeeklyPlanEmployeeController;
 use App\Http\Controllers\Agricola\WeeklyPlanTaskController;
@@ -41,8 +42,9 @@ Route::middleware('jwt.auth')->group(function () {
         Route::apiResource('/cdps',                                         CdpController::class);
         Route::apiResource('/finca-groups',                                 FincaGroupController::class);
         Route::apiResource('/weekly-plan-tasks-crop-inputs',                WeeklyPlanTaskCropInputController::class);
-        });
-        
+        Route::apiResource('/task-guidelines',                              TaskGuidelinesController::class);
+    });
+
     Route::apiResource('/supplies',                                     SupplyController::class);
     Route::apiResource('/weekly-plans',                                 WeeklyPlanController::class);
     Route::apiResource('/weekly-plan-tasks',                            WeeklyPlanTaskController::class);
@@ -81,6 +83,9 @@ Route::middleware('jwt.auth')->group(function () {
         //DASHBOARD
         Route::get('/dashboard/summaryTasksByFinca',                                    [DashboardController::class, 'summaryTasksByFinca']);
         Route::get('/dashboard/activeTasks',                                            [DashboardController::class, 'getActiveTasks']);
+
+        //TASKGUIDELINES
+        Route::post('/task-guidelines/uploadFile',                                      [TaskGuidelinesController::class, 'uploadFile']);
     });
 
     //FINCA GROUPS
