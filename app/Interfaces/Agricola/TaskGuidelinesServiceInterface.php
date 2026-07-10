@@ -9,4 +9,5 @@ interface TaskGuidelinesServiceInterface
     public function getTaskGuidelineById(string $id);
     public function updateTaskGuidelineById(array $data, string $id);
     public function deleteTaskGuidelineById(string $code);
+    public function uploadFile(mixed $file);
 }

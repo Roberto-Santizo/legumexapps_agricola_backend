@@ -92,9 +92,9 @@ class TaskGuidelinesController extends Controller
     {
         try {
             $data = $request->validated();
-            $response = null;
+            $service->uploadFile($data['file']);
 
-            return ResponseHandler::success($response, 'Tareas Guías Cargadas Correctamente', 200);
+            return ResponseHandler::success(null, 'Tareas Guías Cargadas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

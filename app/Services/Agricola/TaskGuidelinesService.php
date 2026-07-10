@@ -3,8 +3,11 @@
 namespace App\Services\Agricola;
 
 use App\Errors\NotFoundError;
+use App\Imports\Agricola\TasksGuidelinesImport;
 use App\Interfaces\Agricola\TaskguidelinesServiceInterface;
 use App\Models\Agricola\TaskGuideline;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Override;
 
 class TaskGuidelinesService implements TaskguidelinesServiceInterface
@@ -51,5 +54,13 @@ class TaskGuidelinesService implements TaskguidelinesServiceInterface
         $task = $this->getTaskGuidelineById($id);
         $task->delete();
         return true;
+    }
+
+    #[Override]
+    public function uploadFile(mixed $file)
+    {
+        DB::transaction(function () use ($file) {
+            Excel::import(new TasksGuidelinesImport, $file);
+        });
     }
 }
