@@ -9,6 +9,7 @@ return [
     App\Providers\Agricola\CropStepProvider::class,
     App\Providers\Agricola\DashboardProvider::class,
     App\Providers\Agricola\DraftWeeklyPlanProvider::class,
+    App\Providers\Agricola\DraftWeeklyPlanTaskProvider::class,
     App\Providers\Agricola\FincaGroupServiceProvider::class,
     App\Providers\Agricola\FincaServiceProvider::class,
     App\Providers\Agricola\LoteProvider::class,

@@ -8,6 +8,7 @@ use App\Http\Controllers\Agricola\CropRangeController;
 use App\Http\Controllers\Agricola\CropStepController;
 use App\Http\Controllers\Agricola\DashboardController;
 use App\Http\Controllers\Agricola\DraftWeeklyPlanController;
+use App\Http\Controllers\Agricola\DraftWeeklyPlanTaskController;
 use App\Http\Controllers\Agricola\FincaController;
 use App\Http\Controllers\Agricola\FincaGroupController;
 use App\Http\Controllers\Agricola\LoteController;
@@ -47,6 +48,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::apiResource('/task-guidelines',                              TaskGuidelinesController::class);
         Route::apiResource('/task-guidelines-supplies',                     TaskGuidelineSupplyController::class);
         Route::apiResource('/draft-weekly-plans',                           DraftWeeklyPlanController::class);
+        Route::apiResource('/draft-weekly-plan-tasks',                      DraftWeeklyPlanTaskController::class);
     });
 
     Route::apiResource('/supplies',                                     SupplyController::class);
