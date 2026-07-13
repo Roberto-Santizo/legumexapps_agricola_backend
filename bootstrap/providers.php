@@ -16,6 +16,7 @@ return [
     App\Providers\Agricola\SupplyServiceProvider::class,
     App\Providers\Agricola\TaskGuidelinesProvider::class,
     App\Providers\Agricola\TaskGuidelinesServicesProvider::class,
+    App\Providers\Agricola\TaskGuidelineSupplyProvider::class,
     App\Providers\Agricola\TaskServiceInterface::class,
     App\Providers\Agricola\TaskServiceProvider::class,
     App\Providers\Agricola\WeeklyPlanEmployeeServiceProvider::class,

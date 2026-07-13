@@ -15,6 +15,7 @@ use App\Http\Controllers\Agricola\RecipeController;
 use App\Http\Controllers\Agricola\SupplyController;
 use App\Http\Controllers\Agricola\TaskController;
 use App\Http\Controllers\Agricola\TaskGuidelinesController;
+use App\Http\Controllers\Agricola\TaskGuidelineSupplyController;
 use App\Http\Controllers\Agricola\WeeklyPlanController;
 use App\Http\Controllers\Agricola\WeeklyPlanEmployeeController;
 use App\Http\Controllers\Agricola\WeeklyPlanTaskController;
@@ -43,6 +44,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::apiResource('/finca-groups',                                 FincaGroupController::class);
         Route::apiResource('/weekly-plan-tasks-crop-inputs',                WeeklyPlanTaskCropInputController::class);
         Route::apiResource('/task-guidelines',                              TaskGuidelinesController::class);
+        Route::apiResource('/task-guidelines-supplies',                     TaskGuidelineSupplyController::class);
     });
 
     Route::apiResource('/supplies',                                     SupplyController::class);
