@@ -10,4 +10,5 @@ interface CdpServiceInterface
     public function getCdpByCode(string $code);
     public function updateCdpById(array $data, string $id);
     public function updateCdpByCode(array $data, string $code);
+    public function explodeCdpTasks(string $code);
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Agricola;
 
+use App\Actions\Cdps\ExplodeCdpTasksAction;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\Cdps\CreateCdpRequest;
@@ -70,6 +71,18 @@ class CdpController extends Controller
             $cdp = $service->updateCdpByCode($data, $id);
 
             return ResponseHandler::success($cdp, 'Cdp Actualizado Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function explodeTasks(string  $id, CdpServiceInterface $service, ExplodeCdpTasksAction $action)
+    {
+         try {
+            $cdp = $service->explodeCdpTasks($id);
+            $action->execute($cdp);
+            
+            return ResponseHandler::success($cdp, 'Cdp Confirmado Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

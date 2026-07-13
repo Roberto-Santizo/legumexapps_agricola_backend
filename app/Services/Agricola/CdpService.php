@@ -5,6 +5,7 @@ namespace App\Services\Agricola;
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\CdpServiceInterface;
 use App\Models\Agricola\Cdp;
+use Override;
 
 class CdpService implements CdpServiceInterface
 {
@@ -56,6 +57,13 @@ class CdpService implements CdpServiceInterface
     {
         $this->getCdpByCode($code);
         $cdp = Cdp::where('name', '=', $code, null)->update($data);
+        return $cdp;
+    }
+
+    #[Override]
+    public function explodeCdpTasks(string $code)
+    {
+        $cdp = $this->getCdpByCode($code);
         return $cdp;
     }
 }
