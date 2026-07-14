@@ -2,6 +2,8 @@
 
 namespace App\Services\Agricola;
 
+use App\Errors\BadRequestError;
+use App\Errors\NotAcceptable;
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\CdpServiceInterface;
 use App\Models\Agricola\Cdp;
@@ -64,6 +66,19 @@ class CdpService implements CdpServiceInterface
     public function explodeCdpTasks(string $code)
     {
         $cdp = $this->getCdpByCode($code);
+        if($cdp->status == 1) throw new NotAcceptable("El CDP ya fue confirmado");
+        $cdp->status = 1;
+        $cdp->save();
         return $cdp;
+    }
+
+    #[Override]
+    public function cleanCdpTasks(string $code)
+    {
+        $cdp = $this->getCdpByCode($code);
+        $cdp->draftTasks()->delete();
+        $cdp->status = 0;
+        $cdp->save();
+        return true;
     }
 }

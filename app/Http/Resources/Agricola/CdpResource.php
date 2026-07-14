@@ -12,6 +12,12 @@ class CdpResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    private $statusMessages = [
+        0 => 'Sin Confirmar',
+        1 => 'Activo',
+        2 => 'Terminado'
+    ];
+
     public function toArray(Request $request): array
     {
         $end_date = $this->end_date;
@@ -29,6 +35,7 @@ class CdpResource extends JsonResource
             'recipe' => $this->recipe->name,
             'crop' => $this->crop->name,
             'status' =>  $this->status,
+            'statusMessage' => $this->statusMessages[$this->status],
             'createdAt' => $this->created_at->format('d-m-Y')
         ];
     }

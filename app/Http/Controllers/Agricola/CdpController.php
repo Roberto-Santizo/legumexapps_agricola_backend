@@ -87,4 +87,15 @@ class CdpController extends Controller
             return ResponseHandler::error($th);
         }
     }
+
+    public function cleanDraftTasks(string  $id, CdpServiceInterface $service)
+    {
+         try {
+            $cdp = $service->cleanCdpTasks($id);
+            
+            return ResponseHandler::success($cdp, 'Cdp Reiniciado Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
 }

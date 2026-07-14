@@ -36,4 +36,9 @@ class Cdp extends Model
     {
         return $this->belongsTo(Crop::class);
     }
+
+    public function draftTasks()
+    {
+        return $this->hasMany(DraftWeeklyPlanTask::class, 'plantation_control_id', 'id');
+    }
 }
