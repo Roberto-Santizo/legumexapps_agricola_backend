@@ -47,6 +47,9 @@ class DraftWeeklyPlanService implements DraftWeeklyPlanServiceInterface
     #[Override]
     public function deleteDraftWeeklyPlanById(string $id)
     {
-        //!IMPLEMENTAR
+        $plan = $this->getDraftWeeklyPlanById($id);
+        $plan->tasks()->delete();
+        $plan->delete();
+        return true;
     }
 }

@@ -62,7 +62,7 @@ class DraftWeeklyPlanController extends Controller
      */
     public function update(CreateDraftWeeklyPlanRequest $request, string $id, DraftWeeklyPlanServiceInterface $service)
     {
-          try {
+        try {
             $data = $request->validated();
             $result = $service->updateDraftWeeklyPlanById($data, $id);
 
@@ -75,8 +75,14 @@ class DraftWeeklyPlanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, DraftWeeklyPlanServiceInterface $service)
     {
-        //
+        try {
+            $result = $service->deleteDraftWeeklyPlanById($id);
+
+            return ResponseHandler::success($result, 'Draft Eliminado Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
     }
 }
