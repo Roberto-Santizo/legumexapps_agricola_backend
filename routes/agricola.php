@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Agricola\AnnualSalaryController;
 use App\Http\Controllers\Agricola\CdpController;
 use App\Http\Controllers\Agricola\CropController;
 use App\Http\Controllers\Agricola\CropInputController;
@@ -49,6 +50,7 @@ Route::middleware('jwt.auth')->group(function () {
         Route::apiResource('/task-guidelines-supplies',                     TaskGuidelineSupplyController::class);
         Route::apiResource('/draft-weekly-plans',                           DraftWeeklyPlanController::class);
         Route::apiResource('/draft-weekly-plan-tasks',                      DraftWeeklyPlanTaskController::class);
+        Route::apiResource('/annual-salaries',                              AnnualSalaryController::class);
     });
 
     Route::apiResource('/supplies',                                     SupplyController::class);

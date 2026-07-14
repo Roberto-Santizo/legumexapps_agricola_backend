@@ -2,6 +2,7 @@
 
 namespace App\Actions\Cdps;
 
+use App\Models\Agricola\AnnualSalary;
 use App\Models\Agricola\Cdp;
 use App\Models\Agricola\DraftWeeklyPlanTask;
 use App\Models\Agricola\TaskGuideline;
@@ -24,6 +25,7 @@ class ExplodeCdpTasksAction
 
         $weekStarts = $this->getWeekStartDates($cdp->start_date, $cdp->end_date);
         $plans = $this->getOrCreatePlans($weekStarts, $lote->finca_id);
+        $amountPerHour = AnnualSalary::all();
 
         $now = Carbon::now();
         $rows = [];
@@ -40,7 +42,7 @@ class ExplodeCdpTasksAction
                     'draft_weekly_plan_id' => $plan->id,
                     'plantation_control_id' => $cdp->id,
                     'hours' => $hours,
-                    'budget' => $hours * 13.2329,
+                    'budget' => $hours * $amountPerHour->last()->amount,
                     'created_at' => $now,
                     'updated_at' => $now,
                 ];
