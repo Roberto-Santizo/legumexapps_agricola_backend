@@ -18,7 +18,7 @@ class DraftWeeklyPlanTaskController extends Controller
     {
         try {
             $draftWeeklyPlanId = $request->query('draftWeeklyPlanId');
-            $result = $service->getDraftWeeklyPlanTasks($draftWeeklyPlanId);
+            $result = $service->getDraftWeeklyPlanTasks($request, $draftWeeklyPlanId);
 
             return ResponseHandler::success(DraftWeeklyPlanTaskResource::collection($result), 'Drafts Obtenidos Correctamente', 200);
         } catch (\Throwable $th) {

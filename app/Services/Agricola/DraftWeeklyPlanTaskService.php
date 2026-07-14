@@ -6,6 +6,7 @@ use App\Errors\BadRequestError;
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\DraftWeeklyPlanTaskServiceInterface;
 use App\Models\Agricola\DraftWeeklyPlanTask;
+use Illuminate\Http\Request;
 use Override;
 
 class DraftWeeklyPlanTaskService implements DraftWeeklyPlanTaskServiceInterface
@@ -18,11 +19,15 @@ class DraftWeeklyPlanTaskService implements DraftWeeklyPlanTaskServiceInterface
     }
 
     #[Override]
-    public function getDraftWeeklyPlanTasks(?string $draftWeeklyPlanId)
+    public function getDraftWeeklyPlanTasks(Request $request, ?string $draftWeeklyPlanId)
     {
         if(!$draftWeeklyPlanId) throw new BadRequestError("El ID del draft plan es requerido");
-        $tasks = DraftWeeklyPlanTask::where('draft_weekly_plan_id', '=', $draftWeeklyPlanId)->get();
-        return $tasks;
+        $query = DraftWeeklyPlanTask::query();
+        $query->where('draft_weekly_plan_id', '=', $draftWeeklyPlanId);
+        if($request->query('cdp')) $query->where('plantation_control_id', $request->query('cdp'));
+
+
+        return $query->get();
     }
 
     #[Override]
