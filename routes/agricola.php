@@ -72,6 +72,9 @@ Route::middleware('jwt.auth')->group(function () {
     
         //WEEKLY PLANS
         Route::post('/weekly-plans/uploadTasks/{id}',                                   [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']);
+        
+        //DRAFT WEEKLY PLANS
+        Route::post('/draft-weekly-plans/confirmPlan/{id}',                             [DraftWeeklyPlanController::class, 'confirmPlan']);
     
         //WEEKLY PLANS EMPLOYEE
         Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',             [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']);

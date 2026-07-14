@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Agricola;
 
+use App\Actions\DraftWeeklyPlan\ConfirmDraftWeeklyPlan;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\DraftWeeklyPlan\CreateDraftWeeklyPlanRequest;
@@ -81,6 +82,18 @@ class DraftWeeklyPlanController extends Controller
             $result = $service->deleteDraftWeeklyPlanById($id);
 
             return ResponseHandler::success($result, 'Draft Eliminado Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function confirmPlan(string $id, DraftWeeklyPlanServiceInterface $service, ConfirmDraftWeeklyPlan $action)
+    {
+        try {
+            $result = $service->getDraftWeeklyPlanById($id);
+            $action->exec($result);
+            
+            return ResponseHandler::success($result, 'Draft Confirmado Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Agricola;
 
+use App\Models\Agricola\WeeklyPlan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,12 +15,14 @@ class DraftWeeklyPlanResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $planExists = WeeklyPlan::where('finca_id', $this->finca_id)->where('week', $this->week)->where('year', $this->year)->exists();
         return [
-            'id' =>         $this->id,
-            'week'=>        $this->week,
-            'year'=>        $this->year,
-            'finca_id'=>    $this->finca_id,
-            'finca'=>       $this->finca->name
+            'id' =>                 $this->id,
+            'week'=>                $this->week,
+            'year'=>                $this->year,
+            'finca_id'=>            $this->finca_id,
+            'finca'=>               $this->finca->name,
+            'isConfirmed' =>        $planExists
         ];
     }
 }
