@@ -9,6 +9,7 @@ use App\Http\Requests\Agricola\Cdps\CreateCdpRequest;
 use App\Http\Requests\Agricola\Cdps\UpdateCdpRequest;
 use App\Http\Resources\Agricola\CdpResource;
 use App\Http\Resources\Agricola\PaginatedCdpsResource;
+use App\Http\Resources\Agricola\SummaryCdpResource;
 use App\Interfaces\Agricola\CdpServiceInterface;
 use Illuminate\Http\Request;
 
@@ -94,6 +95,17 @@ class CdpController extends Controller
             $cdp = $service->cleanCdpTasks($id);
             
             return ResponseHandler::success($cdp, 'Cdp Reiniciado Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function summaryData(string  $id, CdpServiceInterface $service)
+    {
+         try {
+            $cdp = $service->getCdpByCode($id);
+            
+            return ResponseHandler::success(new SummaryCdpResource($cdp), 'Resumen Obtenido Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

@@ -96,6 +96,7 @@ Route::middleware('jwt.auth')->group(function () {
         //CDPS
         Route::post('/cdps/explodeTasks/{id}',                                          [CdpController::class, 'explodeTasks']);
         Route::post('/cdps/cleanDraftTasks/{id}',                                       [CdpController::class, 'cleanDraftTasks']);
+        Route::get('/cdps/summaryData/{id}',                                            [CdpController::class, 'summaryData']);
     });
 
     //FINCA GROUPS

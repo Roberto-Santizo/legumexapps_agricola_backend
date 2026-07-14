@@ -22,7 +22,9 @@ class DraftWeeklyPlanTaskResource extends JsonResource
             'draft_weekly_plan_id'=>        $this->draft_weekly_plan_id,
             'plantation_control_id'=>       $this->plantation_control_id,
             'task'=>                        $this->taskGuideline->task->name,
-            'cdp'=>                         $this->cdp->name
+            'cdp'=>                         $this->cdp->name,
+            'finca'=>                       $this->draftWeeklyPlan->finca->name,
+            'lote'=>                        $this->cdp->lote->name
         ];
     }
 }
