@@ -8,6 +8,10 @@ environments:
     build:
       - 'composer install --no-dev --optimize-autoloader'
       - 'php artisan event:cache'
+    ignore:
+      - 'tests/**'
+      - 'storage/framework/testing/**'
+      - 'node_modules/**'
     queues:
       - default
   staging:
@@ -17,5 +21,9 @@ environments:
     build:
       - 'composer install --no-dev --optimize-autoloader'
       - 'php artisan event:cache'
+    ignore:
+      - 'tests/**'
+      - 'storage/framework/testing/**'
+      - 'node_modules/**'
     queues:
       - default
