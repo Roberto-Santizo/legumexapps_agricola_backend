@@ -32,7 +32,7 @@ class WeeklyPlanTasksImport implements ToCollection, WithHeadingRow, WithMultipl
         $tasks = $collection->pluck('tarea')->unique()->filter();
 
         $allCdps = $this->cdpService->getCdps(null);
-        $allTasks = $this->taskService->getTasks(null);
+        $allTasks = $this->taskService->getTasks(null, null);
 
         $this->validateInformation($cdps, $tasks, $allCdps, $allTasks);
 

@@ -177,4 +177,12 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         $task = $this->getWeeklyPlanTaskById($id);
         return $task->payments()->select(['id', 'name', 'code', 'hours', 'amount', 'date', 'theorical_hours'])->get();
     }
+
+    #[Override]
+    public function assignOperationDateToTasks(array $data)
+    {
+        WeeklyPlanTask::whereIn('id', $data['tasks'])->update(['operation_date' => $data['operation_date']]);
+
+        return true;
+    }
 }

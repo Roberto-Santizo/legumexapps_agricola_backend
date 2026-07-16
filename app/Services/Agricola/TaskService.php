@@ -9,7 +9,6 @@ use App\Models\Agricola\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use Override;
 
 class TaskService implements TaskServiceInterface
 {
@@ -18,11 +17,11 @@ class TaskService implements TaskServiceInterface
         return Task::create($data);
     }
 
-    public function getTasks(?string $limit, Request $request)
+    public function getTasks(?string $limit, ?Request $request)
     {
         $query = Task::query();
 
-        if($request->query('task')){
+        if($request && $request->query('task')){
             $query->where('name', 'LIKE', '%'. $request->query('task') .'%');
         }
 

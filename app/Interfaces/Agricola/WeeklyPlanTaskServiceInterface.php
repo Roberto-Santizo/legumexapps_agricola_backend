@@ -17,4 +17,5 @@ interface WeeklyPlanTaskServiceInterface
     public function getWeeklyPlanTasksByCdp(string $weeklyPlanId, string $cdp);
     public function cleanWeeklyPlanTask(string $id);
     public function getWeeklyPlanTaskPayments(string $id);
+    public function assignOperationDateToTasks(array $data);
 }

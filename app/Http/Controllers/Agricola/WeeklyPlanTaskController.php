@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Agricola;
 use App\Actions\WeeklyPlanTasks\CloseWeeklyPlanTaskAction;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Agricola\WeeklyPlanTasks\AssignOperationDateToTasksRequest;
 use App\Http\Requests\Agricola\WeeklyPlanTasks\CreateWeeklyPlanTaskRequest;
 use App\Http\Requests\Agricola\WeeklyPlanTasks\UpdateWeeklyPlanTaskRequest;
 use App\Http\Resources\Agricola\WeeklyPlanTaskPaymentResource;
@@ -167,6 +168,18 @@ class WeeklyPlanTaskController extends Controller
             $payments = $service->getWeeklyPlanTaskPayments($id);
 
             return ResponseHandler::success(WeeklyPlanTaskPaymentResource::collection($payments), 'Pagos Obtenidas Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function assignOperationDate(AssignOperationDateToTasksRequest $request, WeeklyPlanTaskServiceInterface $service)
+    {
+        try {
+            $data = $request->validated();
+            $service->assignOperationDateToTasks($data);
+            
+            return ResponseHandler::success($data, 'Tareas Actualizadas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
