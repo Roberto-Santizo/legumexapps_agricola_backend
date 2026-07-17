@@ -23,10 +23,11 @@ class CreateWeeklyPlanTaskCropRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'plantation_control_id' =>      ['required', 'numeric', 'exists:plantation_controls,id'],
-            'tarea_id' =>                    ['required', 'numeric', 'exists:tareas,id'],
-            'weekly_plan_id' =>              ['required', 'numeric', 'exists:weekly_plans,id'],
-            'operation_date' =>              ['required', 'string', 'date'],
+            'plantation_control_id' =>          ['required', 'numeric', 'exists:plantation_controls,id'],
+            'tarea_id' =>                       ['required', 'numeric', 'exists:tareas,id'],
+            'weekly_plan_id' =>                 ['required', 'numeric', 'exists:weekly_plans,id'],
+            'dates' =>                          ['required', 'array'],
+            'dates.*'=>                         ['string', 'date']
         ];
     }
 
@@ -45,9 +46,10 @@ class CreateWeeklyPlanTaskCropRequest extends FormRequest
             'weekly_plan_id.numeric'  => 'El plan semanal debe ser un valor numérico.',
             'weekly_plan_id.exists'   => 'El plan semanal seleccionado no existe.',
 
-            'operation_date.required' => 'La fecha de operación es obligatoria.',
-            'operation_date.string'   => 'La fecha de operación debe ser una cadena de texto.',
-            'operation_date.date'     => 'La fecha de operación no tiene un formato válido.',
+            'dates.required' => 'Las fechas son requeridas.',
+            'dates.array' => 'Las fechas deben de ser un arreglo.',
+            'dates.*.string' => 'Uno o más elementos no tienen formato de string.',
+            'dates.*.date' => 'Uno o más elementos no tienen formato de fecha.',
         ];
     }
 }

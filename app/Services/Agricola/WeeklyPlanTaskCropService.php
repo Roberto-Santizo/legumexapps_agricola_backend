@@ -17,9 +17,20 @@ class WeeklyPlanTaskCropService implements WeeklyPlanTaskCropServiceInterface
     #[Override]
     public function createWeeklyPlanTaskCrop(array $data)
     {
-        $task = WeeklyPlanTaskCrop::create($data);
+        $now = Carbon::now();
 
-        return $task;
+        $payloads = array_map(fn ($date) => [
+            "plantation_control_id" => $data['plantation_control_id'],
+            "tarea_id" => $data['tarea_id'],
+            "weekly_plan_id" => $data['weekly_plan_id'],
+            "operation_date" => $date,
+            "created_at" => $now,
+            "updated_at" => $now,
+        ], $data['dates']);
+
+        WeeklyPlanTaskCrop::insert($payloads);
+
+        return true;
     }
 
     #[Override]
@@ -57,6 +68,7 @@ class WeeklyPlanTaskCropService implements WeeklyPlanTaskCropServiceInterface
     public function deleteWeeklyPlanTaskCropById(string $id)
     {
         $task = $this->getWeeklyPlanTaskCropById($id);
+        $task->employees()->delete();
         $task->delete();
 
         return true;
