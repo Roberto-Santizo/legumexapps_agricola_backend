@@ -29,9 +29,11 @@ class WeeklyPlanTasksByLoteResource extends JsonResource
             $total_hours = round($tasks->sum('hours'), 2);
             $total_employees = $tasks->sum('workers_quantity');
             $total_tasks = $tasks->count();
+            $lote_name = $tasks->first()->cdp->lote->name;
 
             $data[] = [
                 'cdp' => $key,
+                'lote' => $lote_name,
                 'total_budget' => $budget,
                 'total_employees' => $total_employees,
                 'total_tasks' => $total_tasks,
