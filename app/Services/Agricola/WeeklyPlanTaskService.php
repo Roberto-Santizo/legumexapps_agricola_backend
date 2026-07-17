@@ -181,7 +181,7 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     #[Override]
     public function assignOperationDateToTasks(array $data)
     {
-        WeeklyPlanTask::whereIn('id', $data['tasks'])->update(['operation_date' => $data['operation_date']]);
+        WeeklyPlanTask::whereIn('id', $data['tasks'])->update(['operation_date' => $data['operation_date'], 'finca_group_id' => $data['finca_group_id']]);
 
         return true;
     }

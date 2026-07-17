@@ -27,6 +27,7 @@ class AssignOperationDateToTasksRequest extends FormRequest
             'tasks' => ['required', 'array', 'min:1'],
             'tasks.*' => ['integer', Rule::exists('task_weekly_plans', 'id')],
             'operation_date' => ['required', 'date'],
+            'finca_group_id' => ['required', 'numeric', 'exists:finca_groups,id']
         ];
     }
 
@@ -42,6 +43,10 @@ class AssignOperationDateToTasksRequest extends FormRequest
 
             'operation_date.required' => 'La fecha de operación es obligatoria.',
             'operation_date.date' => 'La fecha de operación debe tener un formato válido.',
+
+            'finca_group_id.required' => 'El grupo es requerido',
+            'finca_group_id.numeric' => 'El grupo debe de ser un dato númerico',
+            'finca_group_id.exists' => 'El grupo seleccionado no existe',
         ];
     }
 }

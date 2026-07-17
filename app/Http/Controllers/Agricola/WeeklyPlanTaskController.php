@@ -179,7 +179,7 @@ class WeeklyPlanTaskController extends Controller
             $data = $request->validated();
             $service->assignOperationDateToTasks($data);
             
-            return ResponseHandler::success($data, 'Tareas Actualizadas Correctamente', 200);
+            return ResponseHandler::success(true, 'Tareas Actualizadas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
