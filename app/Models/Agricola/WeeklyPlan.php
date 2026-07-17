@@ -71,4 +71,9 @@ class WeeklyPlan extends Model
     {
         return $this->hasMany(WeeklyPlanTaskEmployeePayment::class, 'weekly_plan_id', 'id');
     }
+
+    public function employees()
+    {
+        return $this->hasMany(WeeklyPlanEmployee::class);
+    }
 }

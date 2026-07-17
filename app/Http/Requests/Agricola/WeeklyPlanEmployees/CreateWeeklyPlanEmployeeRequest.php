@@ -23,8 +23,7 @@ class CreateWeeklyPlanEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'code' => ['required', 'string'],
+            'employees' => ['required', 'array'],
             'weekly_plan_id' => ['required', 'exists:weekly_plans,id'],
             'finca_group_id' => ['required', 'exists:finca_groups,id']
         ];
@@ -33,11 +32,8 @@ class CreateWeeklyPlanEmployeeRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'El nombre es obligatorio.',
-            'name.string' => 'El nombre debe ser una cadena de texto.',
-
-            'code.required' => 'El código es obligatorio.',
-            'code.string' => 'El código debe ser una cadena de texto.',
+            'employees.required' => 'Los empleados son requeridos',
+            'employees.array' => 'Los empleados deben de ser un arreglo',
 
             'weekly_plan_id.required' => 'El plan semanal es obligatorio.',
             'weekly_plan_id.exists' => 'El plan semanal seleccionado no existe.',

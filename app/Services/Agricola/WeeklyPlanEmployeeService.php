@@ -13,8 +13,19 @@ class WeeklyPlanEmployeeService implements WeeklyPlanEmployeeServiceInterface
     #[Override]
     public function createWeeklyPlanEmployee(array $data)
     {
-        $employee = WeeklyPlanEmployee::create($data);
-        return $employee;
+        $now = now();
+
+        $payload = array_map(fn (array $employee) => [
+            "name" => $employee['name'],
+            "code" => $employee['code'],
+            "weekly_plan_id" => $data['weekly_plan_id'],
+            "finca_group_id" => $data['finca_group_id'],
+            "created_at" => $now,
+            "updated_at" => $now,
+        ], $data['employees']);
+
+        WeeklyPlanEmployee::insert($payload);
+        return true;
     }
 
     #[Override]

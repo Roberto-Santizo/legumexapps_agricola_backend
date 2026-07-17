@@ -12,6 +12,7 @@ use App\Http\Controllers\Agricola\DraftWeeklyPlanController;
 use App\Http\Controllers\Agricola\DraftWeeklyPlanTaskController;
 use App\Http\Controllers\Agricola\FincaController;
 use App\Http\Controllers\Agricola\FincaGroupController;
+use App\Http\Controllers\Agricola\GetFincaEmployees;
 use App\Http\Controllers\Agricola\LoteController;
 use App\Http\Controllers\Agricola\RecalculateTask;
 use App\Http\Controllers\Agricola\RecipeController;
@@ -103,6 +104,10 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('/cdps/explodeTasks/{id}',                                          [CdpController::class, 'explodeTasks']);
         Route::post('/cdps/cleanDraftTasks/{id}',                                       [CdpController::class, 'cleanDraftTasks']);
         Route::get('/cdps/summaryData/{id}',                                            [CdpController::class, 'summaryData']);
+        
+        //EMPLOYEES FINCA
+        Route::get('/fincas/employees/{id}',                                            GetFincaEmployees::class);
+        
     });
 
     //FINCA GROUPS
