@@ -100,7 +100,7 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         $task = $this->getWeeklyPlanTaskById($id);
         $employees = WeeklyPlanEmployee::where('weekly_plan_id', $task->weekly_plan_id)->where('finca_group_id', $task->finca_group_id)->get();
         if (!$task->group && !$task->use_dron) throw new BadRequestError("La tarea no cuenta con un grupo asignado");
-        if($employees->count() == 0) throw new BadRequestError("El grupo no cuenta con empleados asignados");
+        if($employees->count() == 0 && !$task->use_dron) throw new BadRequestError("El grupo no cuenta con empleados asignados");
         
         if(!$task->use_dron){
             $employees = $task->group->employees()->where('weekly_plan_id', $task->weekly_plan_id)->get();

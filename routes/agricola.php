@@ -80,9 +80,6 @@ Route::middleware('jwt.auth')->group(function () {
         //WEEKLY PLANS EMPLOYEE
         Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',             [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']);
         
-        //PARTIAL CLOSURES
-        Route::post('/weekly-plan-task-partial-closures/addOrUpdate',                   [WeeklyPlanTaskPartialClosureController::class, 'addOrUpdatePartialClosure']);
-        
         //WEEKLY PLAN TASKS
         Route::post('/weekly-plan-tasks/cleanTask/{id}',                                [WeeklyPlanTaskController::class, 'cleanWeeklyPlanTask']);
         Route::get('/weekly-plan-tasks/getPayments/{id}',                               [WeeklyPlanTaskController::class, 'getWeeklyPlanTaskPayments']);
@@ -109,6 +106,10 @@ Route::middleware('jwt.auth')->group(function () {
         Route::get('/fincas/employees/{id}',                                            GetFincaEmployees::class);
         
     });
+
+    //PARTIAL CLOSURES
+    Route::post('/weekly-plan-task-partial-closures/addOrUpdate',                   [WeeklyPlanTaskPartialClosureController::class, 'addOrUpdatePartialClosure']);
+        
 
     //FINCA GROUPS
     Route::get('/finca-groups/groupsSummaryByWeeklyPlan/{id}',                      [FincaGroupController::class, 'groupsSummaryByWeeklyPlan']);
