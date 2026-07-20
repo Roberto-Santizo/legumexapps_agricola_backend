@@ -20,6 +20,7 @@ class TaskService implements TaskServiceInterface
     public function getTasks(?string $limit, ?Request $request)
     {
         $query = Task::query();
+        $query->orderBy('id', 'DESC');
 
         if($request && $request->query('task')){
             $query->where('name', 'LIKE', '%'. $request->query('task') .'%');

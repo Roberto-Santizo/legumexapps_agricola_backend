@@ -18,7 +18,8 @@ class LoteService implements LoteServiceInterface
     public function getLotes(?string $limit)
     {
         $query = Lote::query();
-
+        $query->orderBy('id', 'DESC');
+        
         if ($limit) {
             return $query->paginate($limit);
         }

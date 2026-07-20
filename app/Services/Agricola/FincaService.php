@@ -17,6 +17,7 @@ class FincaService implements FincaServiceInterface
     public function getFincas(string | null $limit)
     {
         $query = Finca::query();
+        $query->orderBy('id', 'DESC');
 
         if ($limit) {
             return $query->paginate($limit);

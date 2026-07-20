@@ -17,6 +17,7 @@ class RecipeService implements RecipeServiceInterface
     public function getRecipes(?string $limit)
     {
         $query = Recipe::query();
+        $query->orderBy('id', 'DESC');
 
         if ($limit) {
             return $query->paginate($limit);

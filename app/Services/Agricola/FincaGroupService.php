@@ -23,6 +23,7 @@ class FincaGroupService implements FincaGroupServiceInterface
     public function getGroups(?string $limit)
     {
         $query = FincaGroup::query();
+        $query->orderBy('id', 'DESC');
 
         if ($limit) return $query->paginate($limit);
 

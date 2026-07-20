@@ -17,6 +17,7 @@ class CropService implements CropServiceInterface
     public function getCrops(?string $limit)
     {
         $query = Crop::query();
+        $query->orderBy('id', 'DESC');
 
         if ($limit) {
             return $query->paginate($limit);

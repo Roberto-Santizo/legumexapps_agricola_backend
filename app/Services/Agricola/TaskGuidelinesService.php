@@ -23,6 +23,7 @@ class TaskGuidelinesService implements TaskguidelinesServiceInterface
     public function getTaskGuidelines(?string $limit)
     {
         $query = TaskGuideline::query();
+        $query->orderBy('id', 'DESC');
 
         if($limit) {
             return $query->paginate($limit);

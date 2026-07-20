@@ -20,6 +20,7 @@ class SupplyService implements SupplyServiceInterface
     public function getSupplies(?string $limit)
     {
         $query = Supply::query();
+        $query->orderBy('id', 'DESC');
 
         if ($limit) return $query->paginate($limit);
 

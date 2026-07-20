@@ -20,8 +20,9 @@ class CdpService implements CdpServiceInterface
     public function getCdps(?string $limit)
     {
         $query = Cdp::query();
-
+        
         $query->with(['lote', 'crop', 'recipe']);
+        $query->orderBy('id', 'DESC');
 
         if ($limit) {
             return $query->paginate($limit);
