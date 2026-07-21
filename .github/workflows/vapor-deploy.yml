@@ -3,9 +3,24 @@ name: Deploy Production (Vapor)
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
+  # claude-code-action does not support the `push` event, so this job
+  # just re-triggers the workflow via workflow_dispatch, which it does support.
+  trigger:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Dispatch deploy run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run vapor-deploy.yml --ref ${{ github.ref_name }} --repo ${{ github.repository }}
+
   deploy:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: read
