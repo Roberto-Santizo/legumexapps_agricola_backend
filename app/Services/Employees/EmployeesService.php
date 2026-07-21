@@ -24,15 +24,14 @@ class EmployeesService implements EmployeesServiceInterface
 
         if($weeklyPlan->finca->code == 'FLS'){
             $url = env('BIOMETRICO_URL')."/employees?department_id={$finca->department_id}";
-            $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url)->collect();
+            $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url)->collect()['data'];
             $url2 = env('BIOMETRICO_URL')."/employees?department_id=7";
-            $entries2 = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url2)->collect();
-            $entries = $entries->collect()->merge($entries2->collect());
+            $entries2 = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url2)->collect()['data'];
+            $entries = [...$entries, ...$entries2];
         }else {
             $url = env('BIOMETRICO_URL')."/employees?department_id={$finca->department_id}";
-            $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url)->collect();
+            $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url)->collect()['data'];
         }
-
 
 
         $assignedEmployees = $this->getWeeklyPlanEmployees($weeklyPlan);
