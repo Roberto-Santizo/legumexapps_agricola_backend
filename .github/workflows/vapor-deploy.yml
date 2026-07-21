@@ -3,28 +3,12 @@ name: Deploy Production (Vapor)
 on:
   push:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
-  # claude-code-action does not support the `push` event, so this job
-  # just re-triggers the workflow via workflow_dispatch, which it does support.
-  trigger:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-    steps:
-      - name: Dispatch deploy run
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run vapor-deploy.yml --ref ${{ github.ref_name }} --repo ${{ github.repository }}
-
   deploy:
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
 
     steps:
       - name: Checkout repository
@@ -43,13 +27,7 @@ jobs:
           composer global require laravel/vapor-cli
           echo "$(composer global config bin-dir --absolute)" >> "$GITHUB_PATH"
 
-      - name: Run Claude Code to deploy via Vapor
-        id: claude
-        uses: anthropics/claude-code-action@v1
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          allowed_bots: 'github-actions[bot]'
-          prompt: 'Run `vapor deploy production` to deploy this application to production using the environment configuration defined in vapor.yml. Report whether the deployment succeeded.'
-          claude_args: '--allowed-tools "Bash(vapor deploy:*)"'
+      - name: Deploy to Vapor (production)
+        run: vapor deploy production
         env:
           VAPOR_API_TOKEN: ${{ secrets.VAPOR_API_TOKEN }}
