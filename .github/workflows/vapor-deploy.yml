@@ -27,6 +27,9 @@ jobs:
           composer global require laravel/vapor-cli
           echo "$(composer global config bin-dir --absolute)" >> "$GITHUB_PATH"
 
+      - name: Install project dependencies
+        run: composer install --no-interaction --prefer-dist
+
       - name: Deploy to Vapor (production)
         run: vapor deploy production
         env:
