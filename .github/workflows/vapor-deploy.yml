@@ -48,6 +48,7 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          allowed_bots: 'github-actions[bot]'
           prompt: 'Run `vapor deploy production` to deploy this application to production using the environment configuration defined in vapor.yml. Report whether the deployment succeeded.'
           claude_args: '--allowed-tools "Bash(vapor deploy:*)"'
         env:
