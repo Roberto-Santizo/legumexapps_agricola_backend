@@ -44,9 +44,13 @@ class WeeklyPlanTaskResource extends JsonResource
             'total_hours' =>                ($total_hours * $totalEmployees) - ($partialClosureHours * $totalEmployees),
             'operation_date' =>             $operation_date ? $this->operation_date->format('Y-m-d') : null,
             'start_date' =>                 $start_date ? $start_date->format('Y-m-d') : null,
-            'start_hour' =>                 $start_date ? $start_date->format('h:i:s') : null,
+            'start_date_label' =>           $start_date ? $start_date->format('d-m-Y') : null,
+            'start_hour' =>                 $start_date ? $start_date->format('H:i:s') : null,
+            'start_hour_label' =>           $start_date ? $start_date->format('h:i:s A') : null,
             'end_date' =>                   $end_date ? $end_date->format('Y-m-d') : null,
-            'end_hour' =>                   $end_date ? $end_date->format('h:i:s') : null,
+            'end_date_label' =>             $end_date ? $end_date->format('d-m-Y') : null,
+            'end_hour' =>                   $end_date ? $end_date->format('H:i:s') : null,
+            'end_hour_label' =>             $end_date ? $end_date->format('h:i:s A') : null,
             'status' =>                     $status,
         ];
     }
