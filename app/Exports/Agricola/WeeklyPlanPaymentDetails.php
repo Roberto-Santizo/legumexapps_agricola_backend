@@ -38,7 +38,7 @@ class WeeklyPlanPaymentDetails implements FromCollection, WithHeadings, WithTitl
                 'MONTO GANADO' =>           $payment->amount,
                 'HORAS REALES' =>           $payment->hours,
                 'HORAS TEORICAS' =>         $payment->theorical_hours,
-                'DIA' =>                    $payment->date->translatedFormat('l'),
+                'DIA' =>                    $payment->date->locale('es')->translatedFormat('l'),
             ];
         });
 
