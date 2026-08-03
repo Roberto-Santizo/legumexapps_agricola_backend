@@ -81,6 +81,12 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     public function updateWeeklyPlanTaskById(array $data, string $id)
     {
         $task = $this->getWeeklyPlanTaskById($id);
+
+        if (array_key_exists('operation_date', $data) && $data['operation_date']) {
+            $plan = $this->getWeeklyPlanByOperationDate($data['operation_date'], $task);
+            $data['weekly_plan_id'] = $plan->id;
+        }
+
         $task->update($data);
         return $task;
     }
@@ -183,20 +189,10 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     #[Override]
     public function assignOperationDateToTasks(array $data)
     {
-        $operationDate = Carbon::parse($data['operation_date']);
-        $week = $operationDate->weekOfYear;
-        $year = $operationDate->year;
-
-        $task = WeeklyPlanTask::with('weeklyPlan')->whereIn('id', $data['tasks'])->first();
+        $task = WeeklyPlanTask::whereIn('id', $data['tasks'])->first();
         if (!$task) throw new NotFoundError("No se encontraron las tareas indicadas");
-        if (!$task->weeklyPlan) throw new NotFoundError("Las tareas no tienen un plan semanal asociado");
 
-        $plan = WeeklyPlan::where('week', $week)
-            ->where('year', $year)
-            ->where('finca_id', $task->weeklyPlan->finca_id)
-            ->first();
-
-        if (!$plan) throw new NotFoundError("No existe un plan semanal para la semana {$week} del año {$year}");
+        $plan = $this->getWeeklyPlanByOperationDate($data['operation_date'], $task);
 
         DB::transaction(function () use ($data, $plan) {
             WeeklyPlanTask::whereIn('id', $data['tasks'])->update([
@@ -207,5 +203,24 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
         });
 
         return true;
+    }
+
+    private function getWeeklyPlanByOperationDate(string $operationDate, WeeklyPlanTask $task): WeeklyPlan
+    {
+        $date = Carbon::parse($operationDate);
+        $week = $date->weekOfYear;
+        $year = $date->year;
+
+        $task->loadMissing('weeklyPlan');
+        if (!$task->weeklyPlan) throw new NotFoundError("La tarea no tiene un plan semanal asociado");
+
+        $plan = WeeklyPlan::where('week', $week)
+            ->where('year', $year)
+            ->where('finca_id', $task->weeklyPlan->finca_id)
+            ->first();
+
+        if (!$plan) throw new NotFoundError("No existe un plan semanal para la semana {$week} del año {$year}");
+
+        return $plan;
     }
 }
