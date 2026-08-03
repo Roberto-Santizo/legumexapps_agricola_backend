@@ -8,9 +8,11 @@ use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskInsumoServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskServiceInterface;
+use App\Models\Agricola\WeeklyPlan;
 use App\Models\Agricola\WeeklyPlanEmployee;
 use App\Models\Agricola\WeeklyPlanTask;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Override;
 
@@ -181,7 +183,28 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     #[Override]
     public function assignOperationDateToTasks(array $data)
     {
-        WeeklyPlanTask::whereIn('id', $data['tasks'])->update(['operation_date' => $data['operation_date'], 'finca_group_id' => $data['finca_group_id']]);
+        $operationDate = Carbon::parse($data['operation_date']);
+        $week = $operationDate->weekOfYear;
+        $year = $operationDate->year;
+
+        $task = WeeklyPlanTask::with('weeklyPlan')->whereIn('id', $data['tasks'])->first();
+        if (!$task) throw new NotFoundError("No se encontraron las tareas indicadas");
+        if (!$task->weeklyPlan) throw new NotFoundError("Las tareas no tienen un plan semanal asociado");
+
+        $plan = WeeklyPlan::where('week', $week)
+            ->where('year', $year)
+            ->where('finca_id', $task->weeklyPlan->finca_id)
+            ->first();
+
+        if (!$plan) throw new NotFoundError("No existe un plan semanal para la semana {$week} del año {$year}");
+
+        DB::transaction(function () use ($data, $plan) {
+            WeeklyPlanTask::whereIn('id', $data['tasks'])->update([
+                'operation_date' => $data['operation_date'],
+                'finca_group_id' => $data['finca_group_id'],
+                'weekly_plan_id' => $plan->id,
+            ]);
+        });
 
         return true;
     }
