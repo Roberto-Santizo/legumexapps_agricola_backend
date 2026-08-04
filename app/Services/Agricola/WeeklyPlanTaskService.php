@@ -167,10 +167,13 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     #[Override]
     public function getWeeklyPlanTasksByCdp(string $weeklyPlanId, string $cdp)
     {
+        $role = auth()->user()->role;
         $tasks = WeeklyPlanTask::where('weekly_plan_id', $weeklyPlanId)
-            ->where(function ($query) {
-                $query->whereDate('operation_date', Carbon::today())
-                    ->orWhereNotNull('start_date')->whereNull('end_date');
+            ->where(function ($query) use($role) {
+                if($role != 'admin' && $role != 'adminagricola'){
+                    $query->whereDate('operation_date', Carbon::today())
+                        ->orWhereNotNull('start_date')->whereNull('end_date');
+                }
             })
             ->whereHas('cdp', fn ($q) => $q->where('name', $cdp))
             ->with('cdp')
