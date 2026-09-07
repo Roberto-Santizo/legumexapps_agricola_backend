@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Agricola;
 
-use App\Actions\WeeklyPlanTasks\CloseWeeklyPlanTaskCropAction;
 use App\Helpers\ResponseHandler;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\WeeklyPlanTaskCrop\CloseWeeklyPlanTaskCrop;
 use App\Http\Requests\Agricola\WeeklyPlanTaskCrop\CreateWeeklyPlanTaskCropRequest;
+use App\Http\Requests\Agricola\WeeklyPlanTaskCrop\UpdateWeeklyPlanTaskCropRequest;
 use App\Http\Resources\Agricola\WeeklyPlanTaskCropResource;
 use App\Http\Resources\Agricola\WeeklyPlanTaskPaymentResource;
 use App\Http\Resources\Agricola\WeeklyPlanTasksCropGroupedByCdpResource;
 use App\Http\Resources\Agricola\WeeklyPlanTasksCropsForCalendarResource;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
-use App\Interfaces\Agricola\WeeklyPlanTaskCropInputServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskCropServiceInterface;
 use Illuminate\Http\Request;
 
@@ -24,7 +24,7 @@ class WeeklyPlanTaskCropController extends Controller
     {
         try {
             $weeklyPlanId = $request->query('weeklyPlanId');
-            $result = $service->getWeeklyPlanTasksCrop($weeklyPlanId);
+            $result = $service->getWeeklyPlanTasksCrop($weeklyPlanId, $request);
             $data = WeeklyPlanTaskCropResource::collection($result);
 
             return ResponseHandler::success($data, 'Tareas de Cosecha Obtenidas Correctamente', 200);
@@ -65,7 +65,7 @@ class WeeklyPlanTaskCropController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CreateWeeklyPlanTaskCropRequest $request, string $id, WeeklyPlanTaskCropServiceInterface $service)
+    public function update(UpdateWeeklyPlanTaskCropRequest $request, string $id, WeeklyPlanTaskCropServiceInterface $service)
     {
         try {
             $data = $request->validated();
@@ -97,7 +97,7 @@ class WeeklyPlanTaskCropController extends Controller
             $tasks = $service->getWeeklyPlanTasksCrop($weeklyPlanId);
             $data = WeeklyPlanTasksCropsForCalendarResource::collection($tasks);
 
-            return ResponseHandler::success($data, 'Tareas de Cosecha Obtenidas CorrWeeklyPlanTaskCropServiceInterfaceectamente', 200);
+            return ResponseHandler::success($data, 'Tareas de Cosecha Obtenidas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
@@ -136,25 +136,46 @@ class WeeklyPlanTaskCropController extends Controller
         }
     }
 
-    public function closeWeeklyPlanTaskCrop(CloseWeeklyPlanTaskCrop $request, string $id, WeeklyPlanTaskCropServiceInterface $service, WeeklyPlanTaskCropInputServiceInterface $inputService)
+    public function closeWeeklyPlanTaskCrop(CloseWeeklyPlanTaskCrop $request, string $id, WeeklyPlanTaskCropServiceInterface $service)
     {
         try {
             $data = $request->validated();
+            $service->closeWeeklyPlanTaskCrop($id, $data);
 
-            $service->closeWeeklyPlanTaskCrop($id, $data, $inputService);
-
-            return ResponseHandler::success($data, 'Tarea de Cosecha Cerrada Correctamente', 200);
+            return ResponseHandler::success(true, 'Tarea de Cosecha Cerrada Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
     }
 
-    public function calculateWeeklyPlanTaskCrop(string $id, WeeklyPlanTaskCropServiceInterface $service, CloseWeeklyPlanTaskCropAction $action)
+    public function calculateWeeklyPlanTaskCrop(string $id, WeeklyPlanTaskCropServiceInterface $service)
     {
         try {
-            $task = $service->getWeeklyPlanTaskCropById($id);
-            $action->execute($task);
-            return ResponseHandler::success(null, 'Tarea de Cosecha Calculada Correctamente', 200);
+            $service->calculateWeeklyPlanTaskCrop($id);
+
+            return ResponseHandler::success(true, 'Pagos de la Tarea de Cosecha Generados Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function cleanWeeklyPlanTaskCrop(string $id, WeeklyPlanTaskCropServiceInterface $service)
+    {
+        try {
+            $service->cleanWeeklyPlanTaskCrop($id);
+
+            return ResponseHandler::success(true, 'Tarea de Cosecha Limpiada Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function getCropInputs(string $id, WeeklyPlanTaskCropServiceInterface $service)
+    {
+        try {
+            $inputs = $service->getCropInputsForTask($id);
+
+            return ResponseHandler::success($inputs, 'Parametros del Cultivo Obtenidos Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

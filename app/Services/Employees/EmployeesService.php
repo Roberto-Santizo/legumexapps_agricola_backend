@@ -17,7 +17,7 @@ class EmployeesService implements EmployeesServiceInterface
     }
 
     #[Override]
-    public function getFincaEmployees(WeeklyPlan $weeklyPlan)
+    public function getFincaEmployees(WeeklyPlan $weeklyPlan, bool $filtered = true)
     {
         $finca = $weeklyPlan->finca;
         $entries = collect();
@@ -33,6 +33,10 @@ class EmployeesService implements EmployeesServiceInterface
             $entries = Http::withHeaders(['Authorization' => env('BIOMETRICO_APP_KEY')])->get($url)->collect()['data'];
         }
 
+
+        if (! $filtered) {
+            return $entries;
+        }
 
         $assignedEmployees = $this->getWeeklyPlanEmployees($weeklyPlan);
         $filteredEmployees = [];

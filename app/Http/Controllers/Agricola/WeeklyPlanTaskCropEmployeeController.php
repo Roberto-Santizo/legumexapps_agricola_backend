@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Agricola;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\WeeklyPlanTaskCropEmployee\CreateEmployeeRequest;
+use App\Http\Resources\Agricola\WeeklyPlanTaskCropEmployeeResource;
 use App\Interfaces\Agricola\WeeklyPlanTaskCropEmployeeServiceInterface;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,7 @@ class WeeklyPlanTaskCropEmployeeController extends Controller
             $taskId = $request->query('taskId');
             $employees = $service->getWeeklyPlanTaskCropEmployees($taskId);
 
-            return ResponseHandler::success($employees, 'Empleados Obtenidos Correctamente', 200);
+            return ResponseHandler::success(WeeklyPlanTaskCropEmployeeResource::collection($employees), 'Empleados Obtenidos Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
@@ -34,7 +35,7 @@ class WeeklyPlanTaskCropEmployeeController extends Controller
             $data = $request->validated();
             $result = $service->createWeeklyPlanTaskCropEmployee($data);
 
-            return ResponseHandler::success($result, 'Empleado Agregado Correctamente', 201);
+            return ResponseHandler::success(new WeeklyPlanTaskCropEmployeeResource($result), 'Empleado Agregado Correctamente', 201);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
@@ -48,7 +49,7 @@ class WeeklyPlanTaskCropEmployeeController extends Controller
         try {
             $employee = $service->getWeeklyPlanTaskCropEmployeeById($id);
 
-            return ResponseHandler::success($employee, 'Empleado Obtenido Correctamente', 200);
+            return ResponseHandler::success(new WeeklyPlanTaskCropEmployeeResource($employee), 'Empleado Obtenido Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

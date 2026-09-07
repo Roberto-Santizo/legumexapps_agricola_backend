@@ -23,11 +23,11 @@ use App\Http\Controllers\Agricola\TaskGuidelineSupplyController;
 use App\Http\Controllers\Agricola\WeeklyPlanController;
 use App\Http\Controllers\Agricola\WeeklyPlanEmployeeController;
 use App\Http\Controllers\Agricola\WeeklyPlanTaskController;
+use App\Http\Controllers\Agricola\WeeklyPlanTaskCropController;
 use App\Http\Controllers\Agricola\WeeklyPlanTaskCropEmployeeController;
 use App\Http\Controllers\Agricola\WeeklyPlanTaskCropInputController;
 use App\Http\Controllers\Agricola\WeeklyPlanTaskEmployeeController;
 use App\Http\Controllers\Agricola\WeeklyPlanTaskPartialClosureController;
-use App\Http\Controllers\WeeklyPlanTaskCropController;
 use App\Http\Controllers\WeeklyPlanTaskInsumoController;
 use Illuminate\Support\Facades\Route;
 
@@ -88,6 +88,7 @@ Route::middleware('jwt.auth')->group(function () {
 
         //WEEKLY PLAN TASKS CROP
         Route::post('/weekly-plan-tasks-crops/calculate/{id}',                          [WeeklyPlanTaskCropController::class, 'calculateWeeklyPlanTaskCrop']);
+        Route::post('/weekly-plan-tasks-crops/cleanTask/{id}',                          [WeeklyPlanTaskCropController::class, 'cleanWeeklyPlanTaskCrop']);
         Route::get('/weekly-plan-tasks-crops/getPayments/{id}',                         [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTaskCropPayments']);
 
         //DASHBOARD
@@ -125,6 +126,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/weekly-plan-tasks-crops/getTasksForCalendar/{weeklyPlanId}',       [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTasksForCalendar']);
     Route::get('/weekly-plan-tasks-crops/getTasksGroupedByCdp/{weeklyPlanId}',      [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTasksGroupByCdp']);
     Route::get('/weekly-plan-tasks-crops/getTasksByCdp/{weeklyPlanId}/{cdp}',       [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTasksCropByCdp']);
+    Route::get('/weekly-plan-tasks-crops/getCropInputs/{id}',                       [WeeklyPlanTaskCropController::class, 'getCropInputs']);
     Route::post('/weekly-plan-tasks-crops/startTask/{id}',                          [WeeklyPlanTaskCropController::class, 'startWeeklyPlanTaskCrop']);
     Route::post('/weekly-plan-tasks-crops/closeTask/{id}',                          [WeeklyPlanTaskCropController::class, 'closeWeeklyPlanTaskCrop']);
 });

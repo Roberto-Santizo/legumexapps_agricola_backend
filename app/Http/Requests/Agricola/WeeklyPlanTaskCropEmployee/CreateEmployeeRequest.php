@@ -4,6 +4,7 @@ namespace App\Http\Requests\Agricola\WeeklyPlanTaskCropEmployee;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateEmployeeRequest extends FormRequest
 {
@@ -23,10 +24,16 @@ class CreateEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' =>                       ['required', 'string'],
-            'code' =>                       ['required', 'string'],
-            'lbs' =>                        ['nullable', 'numeric'],
-            'task_crop_weekly_plan_id' =>   ['required', 'numeric', 'exists:task_crop_weekly_plans,id']
+            'name' => ['required', 'string'],
+            'code' => [
+                'required',
+                'string',
+                Rule::unique('employee_task_crops', 'code')
+                    ->where('task_crop_weekly_plan_id', $this->input('task_crop_weekly_plan_id'))
+                    ->ignore($this->route('weekly_plan_task_crop_employee')),
+            ],
+            'lbs' => ['nullable', 'numeric', 'min:0'],
+            'task_crop_weekly_plan_id' => ['required', 'numeric', 'exists:task_crop_weekly_plans,id'],
         ];
     }
 
@@ -38,8 +45,10 @@ class CreateEmployeeRequest extends FormRequest
 
             'code.required' => 'El código es obligatorio.',
             'code.string' => 'El código debe ser una cadena de texto.',
+            'code.unique' => 'El empleado ya fue agregado a esta tarea de cosecha.',
 
             'lbs.numeric' => 'El campo libras debe ser un valor numérico.',
+            'lbs.min' => 'El campo libras no puede ser negativo.',
 
             'task_crop_weekly_plan_id.required' => 'El plan semanal de cultivo es obligatorio.',
             'task_crop_weekly_plan_id.numeric' => 'El identificador del plan semanal de cultivo debe ser un número.',

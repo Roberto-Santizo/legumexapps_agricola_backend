@@ -23,11 +23,11 @@ class CreateWeeklyPlanTaskCropRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'plantation_control_id' =>          ['required', 'numeric', 'exists:plantation_controls,id'],
-            'tarea_id' =>                       ['required', 'numeric', 'exists:tareas,id'],
-            'weekly_plan_id' =>                 ['required', 'numeric', 'exists:weekly_plans,id'],
-            'dates' =>                          ['required', 'array'],
-            'dates.*'=>                         ['string', 'date']
+            'plantation_control_id' => ['required', 'numeric', 'exists:plantation_controls,id'],
+            'tarea_id' => ['required', 'numeric', 'exists:tareas,id'],
+            'weekly_plan_id' => ['required', 'numeric', 'exists:weekly_plans,id'],
+            'dates' => ['required', 'array', 'min:1'],
+            'dates.*' => ['required', 'distinct', 'date_format:Y-m-d'],
         ];
     }
 
@@ -35,21 +35,22 @@ class CreateWeeklyPlanTaskCropRequest extends FormRequest
     {
         return [
             'plantation_control_id.required' => 'El control de plantación es obligatorio.',
-            'plantation_control_id.numeric'  => 'El control de plantación debe ser un valor numérico.',
-            'plantation_control_id.exists'   => 'El control de plantación seleccionado no existe.',
+            'plantation_control_id.numeric' => 'El control de plantación debe ser un valor numérico.',
+            'plantation_control_id.exists' => 'El control de plantación seleccionado no existe.',
 
             'tarea_id.required' => 'La tarea es obligatoria.',
-            'tarea_id.numeric'  => 'La tarea debe ser un valor numérico.',
-            'tarea_id.exists'   => 'La tarea seleccionada no existe.',
+            'tarea_id.numeric' => 'La tarea debe ser un valor numérico.',
+            'tarea_id.exists' => 'La tarea seleccionada no existe.',
 
             'weekly_plan_id.required' => 'El plan semanal es obligatorio.',
-            'weekly_plan_id.numeric'  => 'El plan semanal debe ser un valor numérico.',
-            'weekly_plan_id.exists'   => 'El plan semanal seleccionado no existe.',
+            'weekly_plan_id.numeric' => 'El plan semanal debe ser un valor numérico.',
+            'weekly_plan_id.exists' => 'El plan semanal seleccionado no existe.',
 
             'dates.required' => 'Las fechas son requeridas.',
             'dates.array' => 'Las fechas deben de ser un arreglo.',
-            'dates.*.string' => 'Uno o más elementos no tienen formato de string.',
-            'dates.*.date' => 'Uno o más elementos no tienen formato de fecha.',
+            'dates.min' => 'Debe enviar al menos una fecha.',
+            'dates.*.distinct' => 'No puede enviar la misma fecha dos veces.',
+            'dates.*.date_format' => 'Uno o más elementos no tienen el formato de fecha Y-m-d.',
         ];
     }
 }

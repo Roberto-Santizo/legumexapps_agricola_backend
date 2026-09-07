@@ -12,13 +12,12 @@ class Cdp extends Model
 {
     protected $table = 'plantation_controls';
 
-
     #[Override]
     protected function casts()
     {
         return [
             'start_date' => 'datetime',
-            'end_date' => 'datetime'
+            'end_date' => 'datetime',
         ];
     }
 
@@ -45,5 +44,10 @@ class Cdp extends Model
     public function tasks()
     {
         return $this->hasMany(WeeklyPlanTask::class, 'plantation_control_id', 'id');
+    }
+
+    public function tasksCrops()
+    {
+        return $this->hasMany(WeeklyPlanTaskCrop::class, 'plantation_control_id', 'id');
     }
 }

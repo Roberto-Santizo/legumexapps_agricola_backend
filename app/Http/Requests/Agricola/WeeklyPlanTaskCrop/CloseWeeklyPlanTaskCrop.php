@@ -18,32 +18,32 @@ class CloseWeeklyPlanTaskCrop extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
+     * La tarea se identifica por el {id} de la ruta, no por el cuerpo.
+     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'task_crop_weekly_plan_id' =>       ['required', 'exists:task_crop_weekly_plans,id'],
-            'inputs' =>                         ['required', 'array'],
-            'inputs.*.crop_input_id'=>          ['required', 'exists:crop_inputs,id'],
-            'inputs.*.value'=>                  ['required', 'numeric'],
+            'inputs' => ['required', 'array', 'min:1'],
+            'inputs.*.crop_input_id' => ['required', 'distinct', 'exists:crop_inputs,id'],
+            'inputs.*.value' => ['required', 'numeric'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'task_crop_weekly_plan_id.required' => 'El plan semanal de cultivo es obligatorio.',
-            'task_crop_weekly_plan_id.exists'   => 'El plan semanal de cultivo seleccionado no existe.',
+            'inputs.required' => 'Debe enviar al menos un parámetro.',
+            'inputs.array' => 'El formato de los parámetros es inválido.',
+            'inputs.min' => 'Debe enviar al menos un parámetro.',
 
-            'inputs.required' => 'Debe enviar al menos un insumo.',
-            'inputs.array'    => 'El formato de los insumos es inválido.',
+            'inputs.*.crop_input_id.required' => 'El parámetro es obligatorio.',
+            'inputs.*.crop_input_id.distinct' => 'No puede enviar el mismo parámetro dos veces.',
+            'inputs.*.crop_input_id.exists' => 'El parámetro seleccionado no existe.',
 
-            'inputs.*.crop_input_id.required' => 'El insumo es obligatorio.',
-            'inputs.*.crop_input_id.exists'   => 'El insumo seleccionado no existe.',
-
-            'inputs.*.value.required' => 'El valor del insumo es obligatorio.',
-            'inputs.*.value.numeric'  => 'El valor del insumo debe ser un número.',
+            'inputs.*.value.required' => 'El valor del parámetro es obligatorio.',
+            'inputs.*.value.numeric' => 'El valor del parámetro debe ser un número.',
         ];
     }
 }
