@@ -103,10 +103,11 @@ Route::middleware('jwt.auth')->group(function () {
         Route::post('/cdps/cleanDraftTasks/{id}',                                       [CdpController::class, 'cleanDraftTasks']);
         Route::get('/cdps/summaryData/{id}',                                            [CdpController::class, 'summaryData']);
         
-        //EMPLOYEES FINCA
-        Route::get('/fincas/employees/{id}',                                            GetFincaEmployees::class);
         
     });
+    
+    //EMPLOYEES FINCA
+    Route::get('/fincas/employees/{id}',                                            GetFincaEmployees::class);
 
     //PARTIAL CLOSURES
     Route::post('/weekly-plan-task-partial-closures/addOrUpdate',                   [WeeklyPlanTaskPartialClosureController::class, 'addOrUpdatePartialClosure']);
