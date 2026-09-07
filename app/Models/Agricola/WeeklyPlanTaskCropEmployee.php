@@ -10,4 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 class WeeklyPlanTaskCropEmployee extends Model
 {
     protected $table = 'employee_task_crops';
+
+    protected $casts = [
+        'lbs' => 'float',
+    ];
+
+    public function taskCrop()
+    {
+        return $this->belongsTo(WeeklyPlanTaskCrop::class, 'task_crop_weekly_plan_id', 'id');
+    }
 }

@@ -23,10 +23,11 @@ class CreateCropInputRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'crop_id' =>            ['required', 'numeric', 'exists:crops,id'],
-            'key' =>                ['required', 'string'],
-            'label' =>              ['required', 'string'],
-            'default_value' =>      ['required', 'numeric']
+            'crop_id' => ['required', 'numeric', 'exists:crops,id'],
+            'key' => ['required', 'string'],
+            'label' => ['required', 'string'],
+            'required' => ['required', 'boolean'],
+            'default_value' => ['required', 'numeric'],
         ];
     }
 
@@ -42,6 +43,9 @@ class CreateCropInputRequest extends FormRequest
 
             'label.required' => 'El campo etiqueta es obligatorio.',
             'label.string' => 'El campo etiqueta debe ser una cadena de texto.',
+
+            'required.required' => 'Debe indicar si el parámetro es obligatorio.',
+            'required.boolean' => 'El campo obligatorio debe ser verdadero o falso.',
 
             'default_value.required' => 'El campo valor por defecto es obligatorio.',
             'default_value.numeric' => 'El campo valor por defecto debe ser un valor numérico.',
